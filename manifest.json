@@ -11,6 +11,7 @@
         "email": "cyp@rouquin.me",
         "url": "http://rouquin.me"
     },
+    "url": "http://www.spip.net/",
     "multi_instance": "true",
     "arguments": {
         "install" : [
