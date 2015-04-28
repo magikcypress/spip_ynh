@@ -1,1 +1,10 @@
-remove
+#!/bin/bash
+
+db_user=spip
+db_name=spip
+root_pwd=$(sudo cat /etc/yunohost/mysql)
+domain=$(sudo yunohost app setting spip domain)
+
+mysql -u root -p$root_pwd -e "DROP DATABASE $db_name ; DROP USER $db_user@localhost ;"
+sudo rm -rf /var/www/spip
+sudo rm -f /etc/nginx/conf.d/$domain.d/spip.conf
