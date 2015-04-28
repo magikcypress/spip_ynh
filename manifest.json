@@ -1,0 +1,34 @@
+{
+    "name": "SPIP",
+    "id": "spip",
+    "description": {
+        "en": "SPIP - publishing system for the Internet",
+        "fr": "SPIP - Système de publication pour l’Internet"
+    },
+    "license": "GPL-3",
+    "developer": {
+        "name": "cyp",
+        "email": "cyp@rouquin.me",
+        "url": "http://rouquin.me"
+    },
+    "multi_instance": "true",
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "ask": {
+                    "en": "Choose a domain for SPIP"
+                },
+                "example": "domain.org"
+            },
+            {
+                "name": "path",
+                "ask": {
+                    "en": "Choose a path for SPIP"
+                },
+                "example": "/spip",
+                "default": "/spip"
+            }
+        ]
+    }
+}
