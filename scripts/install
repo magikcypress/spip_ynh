@@ -36,6 +36,7 @@ sudo yunohost app setting spip mysqlpwd -v $db_pwd
 # Copy files to the right place
 final_path=/var/www/spip
 sudo mkdir -p $final_path
+sudo cp -a ../sources/* $final_path
 
 # Set permissions to roundcube directory
 sudo chown -R www-data: $final_path
