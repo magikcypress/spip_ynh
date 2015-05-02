@@ -48,9 +48,6 @@ sudo cp ../conf/php-fpm.conf $finalphpconf
 sudo chown root: $finalphpconf
 sudo chmod 644 $finalphpconf
 
-# Check sql pwd
-echo $db_pwd > /var/www/spip/tmp/connect.txt
-
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
 sudo service nginx reload
