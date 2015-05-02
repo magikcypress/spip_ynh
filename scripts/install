@@ -4,8 +4,6 @@
 domain=$1
 path=$2
 admin_spip=$3
-language=$4
-is_public=$5
 
 # Check if admin exists
 sudo yunohost user list --json | grep -q "\"username\": \"$admin_spip\""
@@ -14,8 +12,6 @@ if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
 sudo yunohost app setting spip admin -v $admin_spip
-sudo yunohost app setting spip language -v $language
-sudo yunohost app setting spip is_public -v $is_public
 
 # Check domain/path availability
 sudo yunohost app checkurl $domain$path -a spip
@@ -51,6 +47,9 @@ finalphpconf=/etc/php5/fpm/pool.d/spip.conf
 sudo cp ../conf/php-fpm.conf $finalphpconf
 sudo chown root: $finalphpconf
 sudo chmod 644 $finalphpconf
+
+# Check sql pwd
+echo $db_pwd > /var/www/spip/tmp/connect.txt
 
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
