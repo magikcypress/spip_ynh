@@ -38,24 +38,6 @@
                     "fr": "Administrateur du site (doit être un utilisateur YunoHost existant)"
                 },
                 "example": "homer"
-            },
-            {
-                "name": "language",
-                "ask": {
-                    "en": "Choose the language of the SPIP site",
-                    "fr": "Choissisez la langue du SPIP"
-                },
-                "choices": ["en_EN", "fr_FR"],
-                "default": "en_EN"
-            },
-            {
-                "name": "public_site",
-                "ask": {
-                    "en": "Is it a public SPIP site?",
-                    "fr": "Est-ce un site public ?"
-                },
-                "choices": ["Yes", "No"],
-                "default": "Yes"
             }
         ]
     }
