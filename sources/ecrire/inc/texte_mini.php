@@ -75,12 +75,8 @@ function code_echappement($rempl, $source='', $no_transform=false, $mode=NULL) {
 		$return .= "<$mode class=\"base64$source\" title=\"$base64\"></$mode>";
 	}
 
-	return $return
-		. ((!$no_transform AND $mode == 'div')
-			? "\n\n"
-			: ''
-		);
-;
+	return $return;
+
 }
 
 
@@ -156,7 +152,7 @@ function traiter_echap_math_dist($regs) {
 	return $t;
 }
 
-define('_PROTEGE_BLOCS', ',<(html|code|cadre|frame|script|math)(\s[^>]*)?>(.*)</\1>,UimsS');
+define('_PROTEGE_BLOCS', ',<(html|code|cadre|frame|script)(\s[^>]*)?>(.*)</\1>,UimsS');
 
 // - pour $source voir commentaire infra (echappe_retour)
 // - pour $no_transform voir le filtre post_autobr dans inc/filtres
@@ -385,15 +381,52 @@ function echapper_faux_tags($letexte){
   $letexte = "";
   while (count($textMatches)) {
   	// un texte a echapper
-  	$letexte .= str_replace(array("<"),array('&lt;'),array_shift($textMatches));
+  	$letexte .= str_replace("<",'&lt;',array_shift($textMatches));
   	// un tag html qui a servit a faite le split
  		$letexte .= array_shift($textMatches);
   }
   return $letexte;
 }
 
-// Securite : utiliser SafeHTML s'il est present dans ecrire/safehtml/
-// http://doc.spip.org/@safehtml
+/**
+ * Si le html contenu dans un texte ne passe pas sans transformation a travers safehtml
+ * on l'echappe
+ * si safehtml ne renvoie pas la meme chose on echappe les < en &lt; pour montrer le contenu brut
+ *
+ * @param string $texte
+ * @return string
+ */
+function echapper_html_suspect($texte){
+	if (strpos($texte,'<')===false OR strpos($texte,'=')===false)
+		return $texte;
+
+	// on teste sur strlen car safehtml supprime le contenu dangereux
+	// mais il peut aussi changer des ' en " sur les attributs html,
+	// donc un test d'egalite est trop strict
+	if (strlen(safehtml($texte))!==strlen($texte)){
+		$texte = str_replace("<","&lt;",$texte);
+	}
+
+	return $texte;
+}
+
+
+/**
+ * Sécurise un texte HTML 
+ *
+ * Échappe le code PHP et JS.
+ * Applique en plus safehtml si un plugin le définit dans inc/safehtml.php
+ *
+ * Permet de protéger les textes issus d'une origine douteuse (forums, syndications...)
+ *
+ * @filtre
+ * @link http://www.spip.net/4310
+ * 
+ * @param string $t
+ *      Texte à sécuriser
+ * @return string
+ *      Texte sécurisé
+**/
 function safehtml($t) {
 	static $safehtml;
 

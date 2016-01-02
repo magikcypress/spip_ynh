@@ -169,7 +169,7 @@ function traiter_lien_implicite ($ref, $texte='', $pour='url', $connect='')
 	// dans le cas d'un lien vers un doc, ajouter le type='mime/type'
 	if ($type == 'document'
 	AND $mime = sql_getfetsel('mime_type', 'spip_types_documents',
-			"extension IN (SELECT extension FROM spip_documents where id_document =".sql_quote($id).")",
+			"extension IN (".sql_get_select("extension","spip_documents","id_document=".sql_quote($id)).")",
 			'','','','',$connect)
 	)
 		$r['mime'] = $mime;
@@ -240,6 +240,7 @@ function traiter_modeles($texte, $doublons=false, $echap='', $connect='', $liens
 	if (strpos($texte,"<")!==false AND
 	  preg_match_all('/<[a-z_-]{3,}\s*[0-9|]+/iS', $texte, $matches, PREG_SET_ORDER)) {
 		include_spip('public/assembler');
+		$wrap_embed_html = charger_fonction("wrap_embed_html","inc",true);
 		foreach ($matches as $match) {
 			// Recuperer l'appel complet (y compris un eventuel lien)
 
@@ -254,7 +255,9 @@ function traiter_modeles($texte, $doublons=false, $echap='', $connect='', $liens
 				$lien = array(
 					'href' => extraire_attribut($r[0],'href'),
 					'class' => extraire_attribut($r[0],'class'),
-					'mime' => extraire_attribut($r[0],'type')
+					'mime' => extraire_attribut($r[0],'type'),
+					'title' => extraire_attribut($r[0],'title'),
+					'hreflang' => extraire_attribut($r[0],'hreflang')
 				);
 				$n = strlen($r[0]);
 				$a -= $n;
@@ -274,7 +277,7 @@ function traiter_modeles($texte, $doublons=false, $echap='', $connect='', $liens
 				// dans les parametres, plutot que les liens echappes
 				if (!is_null($liens))
 					$params = str_replace($liens[0], $liens[1], $params);
-			  $modele = inclure_modele($type, $id, $params, $lien, $connect, $env);
+				$modele = inclure_modele($type, $id, $params, $lien, $connect, $env);
 				// en cas d'echec, 
 				// si l'objet demande a une url, 
 				// creer un petit encadre vers elle
@@ -300,6 +303,9 @@ function traiter_modeles($texte, $doublons=false, $echap='', $connect='', $liens
 				// le remplacer dans le texte
 				if ($modele !== false) {
 					$modele = protege_js_modeles($modele);
+					if ($wrap_embed_html){
+						$modele = $wrap_embed_html($mod,$modele);
+					}
 					$rempl = code_echappement($modele, $echap);
 					$texte = substr($texte, 0, $a)
 						. $rempl

@@ -421,21 +421,22 @@ function lang_select_public($lang, $lang_select, $titre=null) {
 	// Cas 1. forcer_lang = true et pas de critere {lang_select}
 	if (isset($GLOBALS['forcer_lang']) AND $GLOBALS['forcer_lang']
 	AND $lang_select !== 'oui')
-		return;
+		$lang = $GLOBALS['spip_lang'];
 
 	// Cas 2. l'objet n'a pas de langue definie (ou definie a '')
-	if (!strlen($lang))
-		return;
+	elseif (!strlen($lang))
+		$lang = $GLOBALS['spip_lang'];
 
 	// Cas 3. l'objet est multilingue !
-	if ($lang_select !== 'oui'
-	AND strlen($titre) > 10
-	AND strpos($titre, '<multi>') !== false
-	AND strpos(echappe_html($titre), '<multi>') !== false)
-		return;
+	elseif ($lang_select !== 'oui'
+	  AND strlen($titre) > 10
+	  AND strpos($titre, '<multi>') !== false
+	  AND strpos(echappe_html($titre), '<multi>') !== false)
+		$lang = $GLOBALS['spip_lang'];
 
-	// Tous les cas ayant ete elimines, faire le job
-	$GLOBALS['spip_lang'] = $lang;
+	// faire un lang_select() eventuellement sur la langue inchangee
+	lang_select($lang);
+
 	return;
 }
 

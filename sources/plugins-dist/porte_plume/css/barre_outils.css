@@ -22,7 +22,7 @@
 .markItUp  {
 	margin:5px 0 5px 0;
 	clear:both;
-    position: relative;
+	position: relative;
 }
 .markItUp .markItUpContainer  {
 	margin:0; padding:0;
@@ -86,7 +86,8 @@
 	padding:1em;
 	/* decaler de la hauteur de .markItUpTabs */
 	position:relative;
-	top:2.2em; 
+	top:2.2em;
+	text-align:initial;
 }
 
 /* correction des styles spip_formulaires appliques par defaut (grr) */
