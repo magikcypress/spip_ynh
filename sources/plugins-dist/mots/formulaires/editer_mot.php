@@ -15,7 +15,7 @@ if (!defined("_ECRIRE_INC_VERSION")) return;
 include_spip('inc/actions');
 include_spip('inc/editer');
 
-// http://doc.spip.org/@inc_editer_mot_dist
+// http://code.spip.net/@inc_editer_mot_dist
 function formulaires_editer_mot_charger_dist($id_mot='new', $id_groupe=0, $retour='', $associer_objet='', $dummy1='', $dummy2='', $config_fonc='mots_edit_config', $row=array(), $hidden=''){
 	$valeurs = formulaires_editer_objet_charger('mot',$id_mot,$id_groupe,'',$retour,$config_fonc,$row,$hidden);
 	if ($valeurs['id_parent'] && !$valeurs['id_groupe'])
@@ -50,7 +50,7 @@ function formulaires_editer_mot_identifier_dist($id_mot='new', $id_groupe=0, $re
 }
 
 // Choix par defaut des options de presentation
-// http://doc.spip.org/@articles_edit_config
+// http://code.spip.net/@articles_edit_config
 function mots_edit_config($row)
 {
 	global $spip_ecran, $spip_lang;
@@ -68,18 +68,22 @@ function formulaires_editer_mot_verifier_dist($id_mot='new', $id_groupe=0, $reto
 	// verifier qu'un mot du meme groupe n'existe pas avec le meme titre
 	// la comparaison accepte un numero absent ou different
 	// sinon avertir
-	if (!count($erreurs) AND !_request('confirm_titre_mot')){
-		if (sql_countsel("spip_mots", 
-						"titre REGEXP ".sql_quote("^([0-9]+[.] )?".preg_quote(supprimer_numero(_request('titre')))."$")
-						." AND id_mot<>".intval($id_mot)))
-			$erreurs['titre'] =
-						_T('mots:avis_doublon_mot_cle')
-						." <input type='hidden' name='confirm_titre_mot' value='1' />";
+	// on ne fait la verification que si c'est une creation de mot ou un retitrage
+	if (!intval($id_mot)
+	  OR supprimer_numero(_request('titre'))!==supprimer_numero(sql_getfetsel('titre','spip_mots','id_mot='.intval($id_mot)))){
+		if (!count($erreurs) AND !_request('confirm_titre_mot')){
+			if (sql_countsel("spip_mots",
+							"titre REGEXP ".sql_quote("^([0-9]+[.] )?".preg_quote(supprimer_numero(_request('titre')))."$")
+							." AND id_mot<>".intval($id_mot)))
+				$erreurs['titre'] =
+							_T('mots:avis_doublon_mot_cle')
+							." <input type='hidden' name='confirm_titre_mot' value='1' />";
+		}
 	}
 	return $erreurs;
 }
 
-// http://doc.spip.org/@inc_editer_mot_dist
+// http://code.spip.net/@inc_editer_mot_dist
 function formulaires_editer_mot_traiter_dist($id_mot='new', $id_groupe=0, $retour='', $associer_objet='', $dummy1='', $dummy2='', $config_fonc='mots_edit_config', $row=array(), $hidden=''){
 	$res = array();
 	set_request('redirect','');

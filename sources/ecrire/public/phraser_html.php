@@ -485,23 +485,24 @@ function phraser_criteres($params, &$result) {
 			  $not = "";
 			} else {
 			  // Le debut du premier argument est l'operateur
-			  preg_match("/^([!]?)([a-zA-Z][a-zA-Z0-9]*)[[:space:]]*(.*)$/ms", $param, $m);
+			  preg_match("/^([!]?)([a-zA-Z][a-zA-Z0-9_]*)[[:space:]]*(\??)[[:space:]]*(.*)$/ms", $param, $m);
 			  $op = $m[2];
 			  $not = $m[1];
+			  $cond = $m[3];
 			  // virer le premier argument,
 			  // et mettre son reliquat eventuel
 			  // Recopier pour ne pas alterer le texte source
 			  // utile au debusqueur
-			  if ($m[3]) {
+			  if ($m[4]) {
 			    // une maniere tres sale de supprimer les "' autour de {critere "xxx","yyy"}
-			    if (preg_match(',^(["\'])(.*)\1$,', $m[3])) {
+			    if (preg_match(',^(["\'])(.*)\1$,', $m[4])) {
 			    	$c = null;
-			    	eval ('$c = '.$m[3].';');
+			    	eval ('$c = '.$m[4].';');
 			    	if (isset($c))
-			    		$m[3] = $c;
+			    		$m[4] = $c;
 			    }
 			    $texte = new Texte;
-			    $texte->texte = $m[3]; 
+			    $texte->texte = $m[4]; 
 			    $v[1][0]= $texte;
 			  } else array_shift($v[1]);
 			}
@@ -509,6 +510,7 @@ function phraser_criteres($params, &$result) {
 			$crit = new Critere;
 			$crit->op = $op;
 			$crit->not = $not;
+			$crit->cond = $cond;
 			$crit->exclus ="";
 			$crit->param = $v;
 			$args[] = $crit;

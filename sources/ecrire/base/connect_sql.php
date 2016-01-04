@@ -11,7 +11,7 @@
 \***************************************************************************/
 
 if (!defined('_ECRIRE_INC_VERSION')) return;
-include_spip('base/objets');
+require_once _ROOT_RESTREINT . 'base/objets.php';
 
 //
 // Utilitaires indispensables autour des serveurs SQL

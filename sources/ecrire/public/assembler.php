@@ -477,6 +477,8 @@ function inclure_modele($type, $id, $params, $lien, $connect='', $env=array()) {
 		$contexte['lien'] = str_replace("&quot;",'"', $lien['href']);
 		$contexte['lien_class'] = $lien['class'];
 		$contexte['lien_mime'] = $lien['mime'];
+		$contexte['lien_title'] = $lien['title'];
+		$contexte['lien_hreflang'] = $lien['hreflang'];
 	}
 
 	// Traiter les parametres

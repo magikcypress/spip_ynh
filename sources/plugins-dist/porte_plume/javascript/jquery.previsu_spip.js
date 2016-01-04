@@ -32,15 +32,14 @@
 					mark = $(this).parent().parent();
 					objet = mark.parents('.formulaire_spip')[0].className.match(/formulaire_editer_(\w+)/);
 					champ = mark.parents('li')[0].className.match(/editer_(\w+)/);
+					dir = mark.find('textarea').attr('dir');
 					$(mark).find('.markItUpPreview').height(
 						  $(mark).find('.markItUpHeader').height()
 						+ $(mark).find('.markItUpEditor').height()
 						+ $(mark).find('.markItUpFooter').height()
 					);
 
-					$(mark).find('.markItUpHeader').hide();
-					$(mark).find('.markItUpEditor').hide();
-					$(mark).find('.markItUpFooter').hide();
+					$(mark).find('.markItUpHeader,.markItUpEditor,.markItUpFooter').hide();
 					$(this).addClass('on').next().removeClass('on');
 					$(mark).find('.markItUpPreview').show()
 						.addClass('ajaxLoad')
@@ -50,7 +49,9 @@
 							(objet ? objet[1] : ''))
 						)
 						.removeClass('ajaxLoad');
-					
+					if(dir)
+						$(mark).find('.markItUpPreview').attr('dir',dir);
+
 					//ouvre un nouvel onglet lorsqu'on clique sur un lien dans la prévisualisation
 					$(".markItUpPreview a").attr("target","blank");
 
@@ -59,14 +60,11 @@
 				$('.previsuEditer').click(function(){
 					mark = $(this).parent().parent();
 					$(mark).find('.markItUpPreview').hide();
-					$(mark).find('.markItUpHeader').show();
-					$(mark).find('.markItUpEditor').show();
-					$(mark).find('.markItUpFooter').show();
+					$(mark).find('.markItUpHeader,.markItUpEditor,.markItUpFooter').show();
 					$(this).addClass('on').prev().removeClass('on');
 					return false;
 				});
 			}
-
 
 			function renderPreview(val, champ, objet) {
 				var phtml;

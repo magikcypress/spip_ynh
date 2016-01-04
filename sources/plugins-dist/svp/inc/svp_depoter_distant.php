@@ -101,7 +101,7 @@ function svp_ajouter_depot($url, &$erreur='') {
 	// On vide les paquets locaux pour mettre a jour leurs donnees relatives au depot
 	// comme les mises a jour disponibles
 	include_spip('inc/svp_depoter_local');
-	svp_base_supprimer_paquets_locaux();
+	svp_actualiser_paquets_locaux(true);
 	
 	return true;
 }

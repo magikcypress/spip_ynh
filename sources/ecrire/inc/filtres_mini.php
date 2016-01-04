@@ -100,22 +100,22 @@ function protocole_implicite($url_absolue){
 // ne s'applique qu'aux textes contenant des liens
 // http://doc.spip.org/@liens_absolus
 function liens_absolus($texte, $base='') {
-	if (preg_match_all(',(<(a|link|image)[[:space:]]+[^<>]*href=["\']?)([^"\' ><[:space:]]+)([^<>]*>),imsS', 
+	if (preg_match_all(',(<(a|link|image|img|script)\s[^<>]*(href|src)=[^<>]*>),imsS', 
 	$texte, $liens, PREG_SET_ORDER)) {
 		foreach ($liens as $lien) {
-			$abs = url_absolue($lien[3], $base);
-			if ($abs <> $lien[3] and !preg_match('/^#/',$lien[3]))
-				$texte = str_replace($lien[0], $lien[1].$abs.$lien[4], $texte);
+			foreach(array('href', 'src') as $attr) {
+				$href = extraire_attribut($lien[0], $attr);
+				if (strlen($href)>0) {
+					$abs = url_absolue($href, $base);
+					if ($href != $abs and !preg_match('/^#/',$href)) {
+						$texte_lien = inserer_attribut($lien[0], $attr, $abs);
+						$texte = str_replace($lien[0],$texte_lien,$texte);
+					}
+				}
+			}
 		}
 	}
-	if (preg_match_all(',(<(img|script)[[:space:]]+[^<>]*src=["\']?)([^"\' ><[:space:]]+)([^<>]*>),imsS', 
-	$texte, $liens, PREG_SET_ORDER)) {
-		foreach ($liens as $lien) {
-			$abs = url_absolue($lien[3], $base);
-			if ($abs <> $lien[3])
-				$texte = str_replace($lien[0], $lien[1].$abs.$lien[4], $texte);
-		}
-	}
+
 	return $texte;
 }
 

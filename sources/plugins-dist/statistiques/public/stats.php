@@ -12,7 +12,7 @@
 
 if (!defined("_ECRIRE_INC_VERSION")) return;
 
-// http://doc.spip.org/@public_stats_dist
+// http://code.spip.net/@public_stats_dist
 function public_stats_dist() {
 	// $_SERVER["HTTP_REFERER"] ne fonctionne pas partout
 	if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
@@ -86,6 +86,10 @@ function public_stats_dist() {
 		else	$content[$log_type] = 1; // bienvenue au club
 
 		ecrire_fichier($fichier, serialize($content));
+	}
+	else {
+		$flood = sous_repertoire(_DIR_TMP, 'flood') . $GLOBALS['ip'];
+		@touch($flood);
 	}
 }
 

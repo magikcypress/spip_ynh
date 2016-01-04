@@ -745,7 +745,7 @@ function queue_sleep_time_to_next_job($force=null) {
 		return null;
 	if (!$_SERVER['REQUEST_TIME'])
 		$_SERVER['REQUEST_TIME'] = time();
-	return max(0,$queue_next_job_time-$_SERVER['REQUEST_TIME']);
+	return $queue_next_job_time-$_SERVER['REQUEST_TIME'];
 }
 
 
@@ -969,8 +969,11 @@ function find_in_path ($file, $dirname='', $include=false) {
 					include_once _ROOT_CWD . $a;
 					$inc[$dirname][$file] = $inc[''][$dirname . $file] = true;
 				}
-				if (!defined('_SAUVER_CHEMIN'))
-					define('_SAUVER_CHEMIN',true);
+				if (!defined('_SAUVER_CHEMIN')){
+					// si le chemin n'a pas encore ete charge, ne pas lever le flag, ne pas cacher
+					if (is_null($GLOBALS['path_files'])) return $a;
+					define('_SAUVER_CHEMIN', true);
+				}
 				return $GLOBALS['path_files'][$GLOBALS['path_sig']][$dirname][$file] = $GLOBALS['path_files'][$GLOBALS['path_sig']][''][$dirname . $file] = $a;
 			}
 		}
@@ -988,8 +991,11 @@ function find_in_path ($file, $dirname='', $include=false) {
 		}
 	}
 
-	if (!defined('_SAUVER_CHEMIN'))
-		define('_SAUVER_CHEMIN',true);
+	if (!defined('_SAUVER_CHEMIN')){
+		// si le chemin n'a pas encore ete charge, ne pas lever le flag, ne pas cacher
+		if (is_null($GLOBALS['path_files'])) return false;
+		define('_SAUVER_CHEMIN', true);
+	}
 	return $GLOBALS['path_files'][$GLOBALS['path_sig']][$dirname][$file] = $GLOBALS['path_files'][$GLOBALS['path_sig']][''][$dirname . $file] = false;
 }
 
@@ -1873,6 +1879,7 @@ function init_var_mode(){
 							if (!defined('_VAR_MODE')) define('_VAR_MODE',$_GET['var_mode']);
 							break;
 					}
+          if (isset($GLOBALS['visiteur_session']['nom']))
 					spip_log($GLOBALS['visiteur_session']['nom']
 						. " "._VAR_MODE);
 				}
