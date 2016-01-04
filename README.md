@@ -2,7 +2,7 @@
 
 ## Spip for YunoHost
 
-Version 1.0.1 (04/01/15)
+Version 1.0.1 (04/01/16)
 
 - Delete SPIP sources
 - Fix install script for download and extract SPIP
