@@ -31,8 +31,8 @@ sudo yunohost app setting spip mysqlpwd -v $db_pwd
 
 # Download and extract files to the right place
 final_path=/var/www
-wget http://files.spip.org/spip/stable/spip-3.0.zip
-unzip spip-3.0.zip -d $final_path
+wget http://files.spip.org/spip/stable/spip-3.1.zip
+unzip spip-3.1.zip -d $final_path
 
 # Set permissions to spip directory
 sudo chown -R www-data: $final_path

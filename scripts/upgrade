@@ -13,31 +13,6 @@ final_path=/var/www/spip
 
 db_name=spip
 
-# if [[ "$admin_spip" = "" ]];
-# then
-#     mysql -u root -p$root_pwd $db_name -e "select MAX(user_login) from wp_users where user_status=0 INTO OUTFILE '/tmp/spipuser';"
-#     admin_spip=$(cat /tmp/spipuser)
-#     sudo rm -f /tmp/spipuser
-# fi
-
-# if [[ "$language" = "" ]];
-# then
-#     language=$(sudo grep WPLANG $final_path/wp-config.php | cut -d"'" -f4)
-# fi
-
-# if [[ "$is_public" = "" ]];
-# then
-#     mysql -u root -p$root_pwd $db_name -e "select option_value from wp_options WHERE option_name='active_plugins' INTO OUTFILE '/tmp/spipispublic';"
-#     grep -q http-authentication /tmp/spipispublic
-#     if [[ $? -eq 0 ]];
-#     then
-#         is_public=Yes
-#     else
-#         is_public=No
-#     fi
-#     sudo rm -f /tmp/spipispublic
-# fi
-
 # Check if admin is not null
 if [[ "$admin_spip" = "" || "$is_public" = "" || "$language" = "" ]]; then
     echo "Unable to upgrade, please contact support"

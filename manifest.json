@@ -1,15 +1,19 @@
 {
     "name": "SPIP",
+    "packaging_format": 1,
     "id": "spip",
     "description": {
         "en": "SPIP - publishing system for the Internet",
         "fr": "SPIP - Système de publication pour l’Internet"
     },
     "license": "GPL-3",
-    "developer": {
+    "maintainer": {
         "name": "cyp",
         "email": "cyp@rouquin.me",
-        "url": "http://rouquin.me"
+        "url": "http://www.rouquin.me"
+    },
+    "requirements": {
+        "yunohost": ">> 2.4.0"
     },
     "url": "http://www.spip.net/",
     "multi_instance": "true",
