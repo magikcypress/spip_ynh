@@ -1,23 +1,21 @@
 #!/bin/bash
 
-# Retrieve arguments
-domain=$1
-path=$2
-admin_spip=$3
+app=$YNH_APP_INSTANCE_NAME
 
-# Check if admin exists
-sudo yunohost user list --json | grep -q "\"username\": \"$admin_spip\""
-if [[ ! $? -eq 0 ]]; then
-    echo "Wrong admin"
-    exit 1
-fi
-sudo yunohost app setting spip admin -v $admin_spip
+# Retrieve arguments
+domain=$YNH_APP_ARG_DOMAIN
+path=$YNH_APP_ARG_PATH
+admin=$YNH_APP_ARG_ADMIN
+is_public=$YNH_APP_ARG_IS_PUBLIC
+language=$YNH_APP_ARG_LANGUAGE
+
+ynh_app_setting_set "$app" admin "$admin"
+ynh_app_setting_set "$app" is_public "$is_public"
+ynh_app_setting_set "$app" language "$language"
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a spip
-if [[ ! $? -eq 0 ]]; then
-    exit 1
-fi
+sudo yunohost app checkurl "${domain}${path}" -a "$app" \
+|| ynh_die "Path not available: ${domain}${path}"
 
 # Generate random DES key & password
 db_pwd=$(dd if=/dev/urandom bs=1 count=200 2> /dev/null | tr -c -d '[A-Za-z0-9]' | sed -n 's/\(.\{24\}\).*/\1/p')
