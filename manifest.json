@@ -55,7 +55,7 @@
             {
                 "name": "is_public",
                 "ask": {
-                    "en": "Is it a public WordPress site ?",
+                    "en": "Is it a public SPIP site ?",
                     "fr": "Est-ce un site public ?"
                 },
                 "choices": ["Yes", "No"],
