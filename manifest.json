@@ -54,12 +54,12 @@
             },
             {
                 "name": "is_public",
-                "type": "boolean",
                 "ask": {
-                    "en": "Is it a public application?",
-                    "fr": "Est-ce une application publique ?"
+                    "en": "Is it a public WordPress site ?",
+                    "fr": "Est-ce un site public ?"
                 },
-                "default": true
+                "choices": ["Yes", "No"],
+                "default": "Yes"
             },
             {
                 "name": "language",
