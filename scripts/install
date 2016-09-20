@@ -36,6 +36,10 @@ sudo yunohost app setting $app language -v $language
 
 GENERATE_DB $app	# Créer une base de données et un utilisateur dédié au nom de l'app.
 
+# Crée le repertoire de destination et stocke son emplacement.
+sudo mkdir "$final_path"
+sudo yunohost app setting $app final_path -v $final_path
+
 SETUP_SOURCE "spip-3.1.zip"
 
 # Set permissions to spip directory
