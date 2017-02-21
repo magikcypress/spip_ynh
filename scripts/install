@@ -59,9 +59,15 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/spip.conf
 
 POOL_FPM
 
+# Donne un accès public pour curl
+ynh_app_setting_set $app unprotected_uris "/"
+
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
 sudo service nginx reload
+
+# Régénère la configuration de SSOwat
+sudo yunohost app ssowatconf
 
 if [ "$is_public" = "No" ];
 then
