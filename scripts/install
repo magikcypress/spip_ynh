@@ -52,6 +52,8 @@ SETUP_SOURCE "spip-3.1.zip"
 # Set permissions to spip directory
 sudo chown -R www-data: $final_path
 
+echo -e "127.0.0.1 $domain #SPIP" | sudo tee -a /etc/hosts
+
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
 sed -i "s@ALIASTOCHANGE@$final_path@g" ../conf/nginx.conf
@@ -62,12 +64,12 @@ POOL_FPM
 # Donne un accès public pour curl
 ynh_app_setting_set $app unprotected_uris "/"
 
+# Régénère la configuration de SSOwat
+sudo yunohost app ssowatconf
+
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
 sudo service nginx reload
-
-# Régénère la configuration de SSOwat
-sudo yunohost app ssowatconf
 
 if [ "$is_public" = "No" ];
 then
