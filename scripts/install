@@ -26,7 +26,7 @@ source /usr/share/yunohost/helpers
 
 CHECK_VAR "$app" "app name not set"
 
-CHECK_USER "$admin_spip"
+# CHECK_USER "$admin_spip"
 
 CHECK_PATH
 

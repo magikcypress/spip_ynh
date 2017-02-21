@@ -42,7 +42,7 @@ TRAP_OFF () {	# Ignoring signal capture until TRAP_ON
 
 CHECK_USER () {	# Vérifie la validité de l'user admin
 # $1 = Variable de l'user admin.
-	# ynh_user_exists "$1" || (echo "Wrong admin" >&2 && false)
+	ynh_user_exists "$1" || (echo "Wrong admin" >&2 && false)
 }
 
 CHECK_PATH () {	# Vérifie la présence du / en début de path. Et son absence à la fin.
