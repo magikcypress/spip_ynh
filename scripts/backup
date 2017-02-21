@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on command errors and treat unset variables as an error
+set -eu
+
 # The parameter $1 is the backup directory location dedicated to the app
 backup_dir=$1
 

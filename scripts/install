@@ -1,16 +1,19 @@
 #!/bin/bash
 
-source .fonctions
+source .fonctions	# Charge les fonctions génériques habituellement utilisées dans le script
 
 CLEAN_SETUP () {
-	echo ""
+# Nettoyage des résidus d'installation non pris en charge par le script remove.
+	# Clean hosts
+	sudo sed -i '/#SPIP/d' /etc/hosts
 }
-TRAP_ON
+TRAP_ON	# Active trap pour arrêter le script si une erreur est détectée.
 
 domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
-admin=$YNH_APP_ARG_ADMIN
+admin_wordpress=$YNH_APP_ARG_ADMIN
 language=$YNH_APP_ARG_LANGUAGE
+multisite=$YNH_APP_ARG_MULTISITE
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
 app=$YNH_APP_INSTANCE_NAME
@@ -28,17 +31,18 @@ CHECK_DOMAINPATH
 
 CHECK_FINALPATH
 
-sudo yunohost app setting $app domain -v $domain
-sudo yunohost app setting $app path -v $path
-sudo yunohost app setting $app admin -v $admin
-sudo yunohost app setting $app is_public -v $is_public
-sudo yunohost app setting $app language -v $language
+ynh_app_setting_set $app domain $domain
+ynh_app_setting_set $app path $path
+ynh_app_setting_set $app admin $admin_spip
+ynh_app_setting_set $app is_public $is_public
+ynh_app_setting_set $app language $language
+ynh_app_setting_set $app multisite $multisite
 
 GENERATE_DB $app	# Créer une base de données et un utilisateur dédié au nom de l'app.
 
 # Crée le repertoire de destination et stocke son emplacement.
 sudo mkdir "$final_path"
-sudo yunohost app setting $app final_path -v $final_path
+ynh_app_setting_set $app final_path -v $final_path
 
 SETUP_SOURCE "spip-3.1.zip"
 
@@ -55,5 +59,13 @@ POOL_FPM
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
 sudo service nginx reload
-sudo yunohost app setting spip skipped_uris -v "/"
-sudo yunohost app ssowatconf
+
+if [ "$is_public" = "No" ];
+then
+	# Retire l'accès public
+	ynh_app_setting_delete $app unprotected_uris
+	sudo yunohost app ssowatconf
+fi
+
+# Nettoyer hosts
+sudo sed -i '/#SPIP/d' /etc/hosts

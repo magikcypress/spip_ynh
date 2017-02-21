@@ -21,7 +21,7 @@ CHECK_PATH	# Vérifie et corrige la syntaxe du path.
 # Check if admin is not null
 if [[ "$admin" = "" || "$is_public" = "" || "$language" = "" ]]; then
     echo "Unable to upgrade, please contact support"
-    exit 1
+    ynh_die
 fi
 
 root_pwd=$(sudo cat /etc/yunohost/mysql)
@@ -33,9 +33,8 @@ db_name=$app
 # Check if admin is not null
 if [[ "$admin_spip" = "" || "$is_public" = "" || "$language" = "" ]]; then
 	echo "Unable to upgrade, please contact support"
-	exit 1
+	ynh_die
 fi
-
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf*

@@ -75,8 +75,8 @@ GENERATE_DB () {	# Créer une base de données et un utilisateur dédié au nom 
 	CHECK_VAR "$db_pwd" "db_pwd empty"
 	# Utilise '$app' comme nom d'utilisateur et de base de donnée
 	# Initialise la base de donnée et stocke le mot de passe mysql.
-	ynh_mysql_create_db $db_user $db_user $db_pwd
-	sudo yunohost app setting $app mysqlpwd -v $db_pwd
+	ynh_mysql_create_db "$db_user" "$db_user" $db_pwd
+	ynh_app_setting_set $app mysqlpwd $db_pwd
 }
 
 SETUP_SOURCE () {	# Télécharge la source, décompresse et copie dans $final_path
