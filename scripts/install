@@ -54,12 +54,21 @@ sudo chown -R www-data: $final_path
 
 echo -e "127.0.0.1 $domain #SPIP" | sudo tee -a /etc/hosts
 
-# Modify Nginx configuration file and copy it to Nginx conf directory
-sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
-sed -i "s@ALIASTOCHANGE@$final_path@g" ../conf/nginx.conf
-sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/spip.conf
+# Et copie le fichier de config nginx
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+
+# Modifie les variables dans le fichier de configuration nginx
+sudo sed -i "s@__PATHTOCHANGE__@$path@g" /etc/nginx/conf.d/$domain.d/$app.conf
+sudo sed -i "s@__FINALPATH__@$final_path@g" /etc/nginx/conf.d/$domain.d/$app.conf
+sudo sed -i "s@__NAMETOCHANGE__@$app@g" /etc/nginx/conf.d/$domain.d/$app.conf
 
 POOL_FPM
+
+sudo cp ../conf/config.php $final_path/config/config.php
+
+# Changer les variables du ficher de configuration de SPIP
+sudo sed -i "s/__DB_USER__/$db_user/g" $final_path/config/config.php
+sudo sed -i "s/__DB_PWD__/$db_pwd/g" $final_path/config/config.php
 
 # Donne un accès public pour curl
 ynh_app_setting_set $app unprotected_uris "/"
