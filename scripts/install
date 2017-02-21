@@ -45,7 +45,7 @@ GENERATE_DB $app	# Créer une base de données et un utilisateur dédié au nom 
 
 # Crée le repertoire de destination et stocke son emplacement.
 sudo mkdir "$final_path"
-ynh_app_setting_set $app final_path -v $final_path
+ynh_app_setting_set $app final_path $final_path
 
 SETUP_SOURCE "spip-3.1.zip"
 
