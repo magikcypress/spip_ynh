@@ -14,9 +14,9 @@ TRAP_ON	# Active trap pour arrêter le script si une erreur est détectée.
 
 domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
-admin_wordpress=$YNH_APP_ARG_ADMIN
+admin_spip=$YNH_APP_ARG_ADMIN
 language=$YNH_APP_ARG_LANGUAGE
-multisite=$YNH_APP_ARG_MULTISITE
+#multisite=$YNH_APP_ARG_MULTISITE
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
 app=$YNH_APP_INSTANCE_NAME
@@ -39,7 +39,7 @@ ynh_app_setting_set $app path $path
 ynh_app_setting_set $app admin $admin_spip
 ynh_app_setting_set $app is_public $is_public
 ynh_app_setting_set $app language $language
-ynh_app_setting_set $app multisite $multisite
+#ynh_app_setting_set $app multisite $multisite
 
 GENERATE_DB $app	# Créer une base de données et un utilisateur dédié au nom de l'app.
 
