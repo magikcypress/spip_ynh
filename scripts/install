@@ -14,7 +14,7 @@ TRAP_ON	# Active trap pour arrêter le script si une erreur est détectée.
 
 domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
-admin_spip=$YNH_APP_ARG_ADMIN
+admin=$YNH_APP_ARG_ADMIN
 language=$YNH_APP_ARG_LANGUAGE
 #multisite=$YNH_APP_ARG_MULTISITE
 is_public=$YNH_APP_ARG_IS_PUBLIC
@@ -26,7 +26,7 @@ source /usr/share/yunohost/helpers
 
 CHECK_VAR "$app" "app name not set"
 
-CHECK_USER "$admin_spip"
+CHECK_USER "$admin"
 
 CHECK_PATH
 
@@ -36,7 +36,7 @@ CHECK_FINALPATH
 
 ynh_app_setting_set $app domain $domain
 ynh_app_setting_set $app path $path
-ynh_app_setting_set $app admin $admin_spip
+ynh_app_setting_set $app admin $admin
 ynh_app_setting_set $app is_public $is_public
 ynh_app_setting_set $app language $language
 #ynh_app_setting_set $app multisite $multisite
