@@ -64,11 +64,11 @@ sudo sed -i "s@__NAMETOCHANGE__@$app@g" /etc/nginx/conf.d/$domain.d/$app.conf
 
 POOL_FPM
 
-sudo cp ../conf/config.php $final_path/config/config.php
+sudo cp ../conf/connect.php $final_path/config/connect.php
 
 # Changer les variables du ficher de configuration de SPIP
-sudo sed -i "s/__DB_USER__/$db_user/g" $final_path/config/config.php
-sudo sed -i "s/__DB_PWD__/$db_pwd/g" $final_path/config/config.php
+sudo sed -i "s/__DB_USER__/$db_user/g" $final_path/config/connect.php
+sudo sed -i "s/__DB_PWD__/$db_pwd/g" $final_path/config/connect.php
 
 # Donne un accès public pour curl
 ynh_app_setting_set $app unprotected_uris "/"

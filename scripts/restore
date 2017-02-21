@@ -40,14 +40,14 @@ db_user=$app
 ynh_mysql_create_db $db_user $db_user $db_pwd
 sudo su -c "mysql -u $db_user -p$db_pwd $app < ${backup_dir}/db.sql"
 sudo rm -f "${backup_dir}/db.sql"
-sudo sed -i -e "s/'DB_USER', *'[^']*'/'DB_USER', '$app'/g" $final_path/wp-config.php
-sudo sed -i -e "s/'DB_NAME', *'[^']*'/'DB_NAME', '$app'/g" $final_path/wp-config.php
+sudo sed -i -e "s/'DB_USER', *'[^']*'/'DB_USER', '$app'/g" $final_path/config/connect.php
+sudo sed -i -e "s/'DB_NAME', *'[^']*'/'DB_NAME', '$app'/g" $final_path/config/connect.php
 
 # Set permissions
 # Les fichiers appartiennent à www-data, pour permettre les mises à jour.
 sudo chown -R www-data: $final_path
-# Sauf le fichier de config wp-config.php qui appartient à root
-sudo chown root: $final_path/wp-config.php
+# Sauf le fichier de config connect.php qui appartient à root
+sudo chown root: $final_path/config/connect.php
 
 # Copy dedicated php-fpm process from backup folder to the right location
 sudo cp -a $backup_dir/conf/php-fpm.conf /etc/php5/fpm/pool.d/$app.conf
