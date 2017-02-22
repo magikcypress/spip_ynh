@@ -2,6 +2,11 @@
 
 ## Spip for YunoHost
 
+### Version 1.1.3 (22/02/17)
+
+- Update scripts for passing package_linter
+- Install database
+
 ### Version 1.0.3 (20/10/16)
 
 - Update script - status test
