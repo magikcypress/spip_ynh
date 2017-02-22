@@ -70,6 +70,14 @@ sudo cp ../conf/connect.php $final_path/config/connect.php
 sudo sed -i "s/__DB_USER__/$db_user/g" $final_path/config/connect.php
 sudo sed -i "s/__DB_PWD__/$db_pwd/g" $final_path/config/connect.php
 
+# Changer les informations de la tables spip_auteurs
+sudo sed -i "s@__ADMIN_SPIP__@$admin_spip@g" ../conf/sql/spip.sql
+sudo sed -i "s@__DB_USER__@$db_user@g" ../conf/sql/spip.sql
+sudo sed -i "s@__DOMAIN__@$admin_spip@g" ../conf/sql/spip.sql
+
+# Charger la structure des tables dans la base.
+mysql --debug-check -u $db_user -p$db_pwd $db_user < ../conf/sql/spip.sql
+
 # Donne un accès public pour curl
 ynh_app_setting_set $app unprotected_uris "/"
 
