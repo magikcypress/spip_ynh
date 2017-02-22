@@ -111,7 +111,7 @@ CREATE TABLE `spip_auteurs` (
 
 LOCK TABLES `spip_auteurs` WRITE;
 /*!40000 ALTER TABLE `spip_auteurs` DISABLE KEYS */;
-INSERT INTO `spip_auteurs` VALUES (1,'__DB_USER__','','__DB_USER__@__DOMAIN__','','','__ADMIN_SPIP__','5955dbe5f351080b70f8ce2c75deb82445f77042777d5ea8cb07ae5b609312dc','','0minirezo','oui','2017-02-22 00:06:22','','$1$KNqE7vd2$fexIaC70Xcs4s1BJnsykv0','0000-00-00 00:00:00','97513991858acd5fe2e1654.18025636','120403642958acd5fe40a894.55435342',NULL,NULL,'spip','',NULL,NULL);
+INSERT INTO `spip_auteurs` VALUES (1,'__DB_USER__','','__ADMIN_SPIP__@__DOMAIN__','','','__ADMIN_SPIP__','__DB_SHA__','','0minirezo','oui','2017-02-22 00:06:22','','__DB_PWD__','0000-00-00 00:00:00','__ALEA_ACTUEL__','__ALEA_FUTUR__',NULL,NULL,'spip','',NULL,NULL);
 /*!40000 ALTER TABLE `spip_auteurs` ENABLE KEYS */;
 UNLOCK TABLES;
 
