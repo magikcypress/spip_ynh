@@ -77,6 +77,7 @@ language="$(echo $language | head -c 2)"
 
 # Changer les informations de la tables spip_auteurs
 sudo sed -i "s@__ADMIN_SPIP__@$admin_spip@g" ../conf/sql/spip.sql
+sudo sed -i "s@__PATH__@$path@g" ../conf/sql/spip.sql
 sudo sed -i "s@__DB_USER__@$db_user@g" ../conf/sql/spip.sql
 sudo sed -i "s@__DB_PWD__@$db_md5@g" ../conf/sql/spip.sql
 sudo sed -i "s@__DOMAIN__@$domain@g" ../conf/sql/spip.sql
