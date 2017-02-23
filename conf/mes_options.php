@@ -3,3 +3,4 @@
 define('_SERVER_APACHE', 'false');
 // define('_DIR_CONNECT', 'config');
 // define('_DIR_TMP', 'tmp');
+$ignore_auth_http = true;
