@@ -1,4 +1,4 @@
-{
+ (must be an existing YunoHost user){
     "name": "SPIP",
     "id": "spip",
     "packaging_format": 1,
@@ -48,8 +48,8 @@
                 "name": "admin",
                 "type": "user",
                 "ask": {
-                    "en": "Choose an admin user",
-                    "fr": "Choisissez l’administrateur"
+                    "en": "Choose an admin user (must be an existing YunoHost user)",
+                    "fr": "Choisissez l’administrateur (doit être un utilisateur YunoHost existant)"
                 },
                 "example": "johndoe"
             },
