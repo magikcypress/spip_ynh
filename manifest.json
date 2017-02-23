@@ -1,4 +1,4 @@
- {
+{
 	"name": "SPIP",
 	"id": "spip",
 	"packaging_format": 1,
@@ -11,7 +11,7 @@
 	"license": "free",
 	"maintainer": {
 		"name": "cyp",
-		"email": "cyp@rouquin.me",
+		"email": "cyp@rouquin.me"
 	},
 	"requirements": {
 		"yunohost": ">> 2.4.0"
