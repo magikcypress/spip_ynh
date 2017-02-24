@@ -42,6 +42,8 @@ Request a "forgotten password" to change your password, you will receive an emai
 - Database install without going through the system install
 - Multilanguage support
 
+## Versionning
+
 ### Version 1.1.3 (22/02/17)
 
 - Update scripts for passing package_linter
