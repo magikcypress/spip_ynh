@@ -1,4 +1,4 @@
-# SPIP_ynh
+# SPIP for YunoHost
 
 ## Spip c'est quoi ?
 
