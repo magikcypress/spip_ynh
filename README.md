@@ -4,6 +4,8 @@
 
 SPIP est un système de publication pour l’Internet qui s’attache particulièrement au fonctionnement collectif, au multilinguisme et à la facilité d’emploi. C’est un logiciel libre, distribué sous la licence GNU/GPL. Il peut ainsi être utilisé pour tout site Internet, qu’il soit associatif ou institutionnel, personnel ou marchand.
 
+Source: [spip.net](http://www.spip.net/fr_rubrique91.html)
+
 ## Fonctionnalité de l'application pour Yunohost
 
 - Installation de la base sans passer par le système d'installation
@@ -29,11 +31,13 @@ Faire une demande de "mot de passe oublié" pour changer votre mot de passe, vou
 
 SPIP is a publishing system for the Internet in which great importance is attached to collaborative working, to multilingual environments, and to simplicity of use for web authors. It is free software, distributed under the GNU/GPL licence. This means that it can be used for any Internet site, whether personal or institutional, non-profit or commercial.
 
+Source: [spip.net](http://www.spip.net/en_rubrique25.html)
+
 ### Use
 
 Access the site administration by writing the following address in your browser.
 
-https: //www.domain.tld/spip/ecrire
+https://www.domain.tld/spip/ecrire
 
 Request a "forgotten password" to change your password, you will receive an email telling you how to change your password.
 
