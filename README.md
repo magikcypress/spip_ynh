@@ -10,6 +10,7 @@ Source: [spip.net](http://www.spip.net/fr_rubrique91.html)
 
 - Installation de la base sans passer par le système d'installation
 - Support multilingue
+- Support LDAP
 
 ### Installation
 
@@ -45,8 +46,13 @@ Request a "forgotten password" to change your password, you will receive an emai
 
 - Database install without going through the system install
 - Multilanguage support
+- LDAP support
 
 ## Versionning
+
+### Version 1.1.4 (05/03/17)
+
+- Support LDAP
 
 ### Version 1.1.3 (22/02/17)
 

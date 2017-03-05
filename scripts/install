@@ -18,6 +18,7 @@ admin_spip=$YNH_APP_ARG_ADMIN
 language=$YNH_APP_ARG_LANGUAGE
 #multisite=$YNH_APP_ARG_MULTISITE
 is_public=$YNH_APP_ARG_IS_PUBLIC
+ldap=$YNH_APP_ARG_LDAP
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -39,6 +40,7 @@ ynh_app_setting_set $app path $path
 ynh_app_setting_set $app admin $admin_spip
 ynh_app_setting_set $app is_public $is_public
 ynh_app_setting_set $app language $language
+ynh_app_setting_set $app ldap $ldap
 #ynh_app_setting_set $app multisite $multisite
 
 GENERATE_DB $app	# Créer une base de données et un utilisateur dédié au nom de l'app.
@@ -49,7 +51,7 @@ ynh_app_setting_set $app final_path $final_path
 
 SETUP_SOURCE "spip-3.1.zip"
 
-# Set permissions to spip directory
+# Set permissions du répertoire spip
 sudo chown -R www-data: $final_path
 
 echo -e "127.0.0.1 $domain #SPIP" | sudo tee -a /etc/hosts
@@ -70,12 +72,12 @@ fi
 POOL_FPM
 
 sudo cp ../conf/connect.php $final_path/config/connect.php
-sudo cp ../conf/mes_options.php $final_path/config/mes_options.php
+sudo cp ../conf/mes_options.php $final_path/config/mes_options.php 
 
-# Changer les variables du ficher de configuration de SPIP
-sudo sed -i "s/__DB_USER__/$db_user/g" $final_path/config/connect.php
-sudo sed -i "s/__DB_PWD__/$db_pwd/g" $final_path/config/connect.php                                                                          
-																							 
+# Changer les variables du fichier de configuration de SPIP
+sudo sed -i "s@__DB_USER__@$db_user@g" $final_path/config/connect.php
+sudo sed -i "s@__DB_PWD__@$db_pwd@g" $final_path/config/connect.php 
+
 db_md5=$(echo $db_pwd | md5sum | awk '{print $1}')
 db_sha=$(echo $db_pwd | openssl dgst -sha1 -hmac "key" | awk -F'= ' {'print $2'})
 language="$(echo $language | head -c 2)"
@@ -105,8 +107,23 @@ done
 # Charger la structure des tables dans la base.
 mysql --debug-check -u $db_user -p$db_pwd $db_user < ../conf/sql/spip.sql
 
-# Donne un accès public pour curl
-ynh_app_setting_set $app unprotected_uris "/"
+# Utilisation de LDAP pour SPIP
+if [ "$ldap" = "Yes" ];
+then
+	sudo cp ../conf/ldap.php $final_path/config/ldap.php
+	sudo sed -i "s/__LDAP__/ldap/g" $final_path/config/connect.php    
+	sudo mysql -e "INSERT INTO spip_meta (nom, valeur, impt) VALUES ('ldap_statut_import', '1comite', 'oui');" -u $db_user -p$db_pwd $db_user
+
+else
+	sudo sed -i "s@__LDAP__@@g" $final_path/config/connect.php 
+fi
+
+# Setup SSOwat
+ynh_app_setting_set "$app" is_public "$is_public"
+if [ "$is_public" = "Yes" ];
+then
+  ynh_app_setting_set "$app" unprotected_uris "/"
+fi
 
 # Régénère la configuration de SSOwat
 sudo yunohost app ssowatconf
@@ -114,13 +131,6 @@ sudo yunohost app ssowatconf
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
 sudo service nginx reload
-
-if [ "$is_public" = "No" ];
-then
-	# Retire l'accès public
-	ynh_app_setting_delete $app unprotected_uris
-	sudo yunohost app ssowatconf
-fi
 
 # Nettoyer hosts
 sudo sed -i '/#SPIP/d' /etc/hosts

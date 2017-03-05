@@ -6,7 +6,7 @@
 		"en": "SPIP - publishing system for the Internet",
 		"fr": "SPIP - Système de publication pour l’Internet"
 	},
-	"version": "1.1.3",
+	"version": "1.1.4",
 	"url": "http://www.spip.net/",
 	"license": "free",
 	"maintainer": {
@@ -69,6 +69,15 @@
 				},
 				"choices": ["en_EN", "fr_FR"],
 				"default": "fr_FR"
+			},
+			{
+				"name": "ldap",
+				"ask": {
+					"en": "LDAP Connection",
+					"fr": "Connexion LDAP"
+				},
+				"choices": ["Yes", "No"],
+				"default": "No"
 			}
 		]
 	}
