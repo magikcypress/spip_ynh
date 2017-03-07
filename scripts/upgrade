@@ -4,12 +4,10 @@
 set -eu
 
 source .fonctions	# Loads the generic functions usually used in the script
+source /usr/share/yunohost/helpers # Source YunoHost helpers
 
 # See comments in install script
 app=$YNH_APP_INSTANCE_NAME
-
-# Source YunoHost helpers
-source /usr/share/yunohost/helpers
 
 # Retrieve app settings
 domain=$(ynh_app_setting_get "$app" domain)
