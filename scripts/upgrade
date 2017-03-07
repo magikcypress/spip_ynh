@@ -3,7 +3,7 @@
 # Exit on command errors and treat unset variables as an error
 set -eu
 
-source .fonctions	# Charge les fonctions génériques habituellement utilisées dans le script
+source .fonctions	# Loads the generic functions usually used in the script
 
 # See comments in install script
 app=$YNH_APP_INSTANCE_NAME
@@ -18,7 +18,7 @@ admin=$(ynh_app_setting_get "$app" admin)
 is_public=$(ynh_app_setting_get "$app" is_public)
 language=$(ynh_app_setting_get "$app" language)
 
-CHECK_PATH	# Vérifie et corrige la syntaxe du path.
+CHECK_PATH	# Checks and corrects the syntax of the path.
 
 # Check if admin is not null
 if [[ "$admin" = "" || "$is_public" = "" || "$language" = "" ]]; then
@@ -32,7 +32,7 @@ final_path=/var/www/$app
 
 db_name=$app
 
-CHECK_MD5_CONFIG "connect.php" "$final_path/config/connect.php"	# Créé un backup du fichier de config si il a été modifié.
+CHECK_MD5_CONFIG "connect.php" "$final_path/config/connect.php"	# Created a backup of the config file if it was changed.
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf*
