@@ -5,7 +5,7 @@
 set -eu
 
 # The parameter $1 is the backup directory location dedicated to the app
-backup_dir=$1
+backup_dir=$YNH_APP_ARG_PATH
 
 # The parameter $2 is the id of the app instance ex: ynhexample__2
 app=$YNH_APP_INSTANCE_NAME
