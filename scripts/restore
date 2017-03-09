@@ -29,10 +29,10 @@ phpfpm_conf="/etc/php5/fpm/pool.d/${app}.conf"
 [[ -f $phpfpm_conf ]] && ynh_die \
 "The PHP FPM configuration already exists at '${phpfpm_conf}'.
  You should safely delete it before restoring this app."
-# phpfpm_ini="/etc/php5/fpm/conf.d/20-${app}.ini"
-# [[ -f $phpfpm_ini ]] && ynh_die \
-# "The PHP FPM INI configuration already exists at '${phpfpm_ini}'.
-#  You should safely delete it before restoring this app."
+phpfpm_ini="/etc/php5/fpm/conf.d/20-${app}.ini"
+[[ -f $phpfpm_ini ]] && ynh_die \
+"The PHP FPM INI configuration already exists at '${phpfpm_ini}'.
+ You should safely delete it before restoring this app."
 
  # Restore sources & data
 final_path="/var/www/${app}"
@@ -48,6 +48,8 @@ if [[ $with_mysql -eq 1 ]]; then
 	ynh_mysql_create_db $db_user $db_user $db_pwd
 	sudo su -c "mysql -u $db_user -p$db_pwd $app < ./db.sql"
 	sudo rm -f "./db.sql"
+	# sudo sed -i -e "s/'__DB_USER__', *'[^']*'/'__DB_USER__', '$app'/g" $final_path/config/connect.php
+	# sudo sed -i -e "s/'__DB_PWD__', *'[^']*'/'__DB_PWD__', '$app'/g" $final_path/config/connect.php
 	sudo sed -i "s@__DB_USER__@$db_user@g" $final_path/config/connect.php
 	sudo sed -i "s@__DB_PWD__@$db_pwd@g" $final_path/config/connect.php 
 fi
