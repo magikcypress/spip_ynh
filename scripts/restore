@@ -14,11 +14,15 @@ source /usr/share/yunohost/helpers
 domain=$(ynh_app_setting_get $app domain)
 path=$(ynh_app_setting_get $app path)
 is_public=$(ynh_app_setting_get $app is_public)
-final_path=$(ynh_app_setting_get $app final_path)
+with_mysql=$(ynh_app_setting_get "$app" with_mysql)
 
-if [ -d $final_path ]; then
-    ynh_die "There is already a directory: $final_path"
-fi
+# Check domain/path availability
+sudo yunohost app checkurl "${domain}${path}" -a "$app" \
+    || ynh_die "Path not available: ${domain}${path}"
+
+# Restore sources & data
+final_path="/var/www/${app}"
+sudo cp -a ./sources "$final_path"
 
 # Check configuration files php-fpm
 nginx_conf="/etc/nginx/conf.d/${domain}.d/${app}.conf"
@@ -34,23 +38,25 @@ phpfpm_ini="/etc/php5/fpm/conf.d/20-${app}.ini"
 "The PHP FPM INI configuration already exists at '${phpfpm_ini}'.
  You should safely delete it before restoring this app."
 
-sudo cp -a ./sources $final_path
-
-db_pwd=$(ynh_app_setting_get $app mysqlpwd)
-db_user=$app
-ynh_mysql_create_db $db_user $db_user $db_pwd
-sudo su -c "mysql -u $db_user -p$db_pwd $app < ./db.sql"
-sudo rm -f "./db.sql"
-sudo sed -i -e "s/'DB_USER', *'[^']*'/'DB_USER', '$app'/g" $final_path/config/connect.php
-sudo sed -i -e "s/'DB_NAME', *'[^']*'/'DB_NAME', '$app'/g" $final_path/config/connect.php
+# Restore db
+if [[ $with_mysql -eq 1 ]]; then
+	db_pwd=$(ynh_app_setting_get $app mysqlpwd)
+	db_user=$app
+	ynh_mysql_create_db $db_user $db_user $db_pwd
+	sudo su -c "mysql -u $db_user -p$db_pwd $app < ./db.sql"
+	sudo rm -f "./db.sql"
+	sudo sed -i -e "s/'__DB_USER__', *'[^']*'/'__DB_USER__', '$app'/g" $final_path/config/connect.php
+	# sudo sed -i -e "s/'__DB_PWD__', *'[^']*'/'__DB_PWD__', '$app'/g" $final_path/config/connect.php
+fi
 
 # Set permissions
 sudo chown -R www-data: $final_path
 
-# Restore configuration files
-sudo cp -a ./conf/nginx.conf   "$nginx_conf"
-sudo cp -a ./conf/php-fpm.conf "$phpfpm_conf"
-sudo cp -a ./conf/php-fpm.ini "$phpfpm_ini"
+# Restore nginx configuration files
+sudo cp -a ./nginx.conf   "$nginx_conf"
+# Restore php-fpm configuration files
+sudo cp -a ./php-fpm.conf "$phpfpm_conf"
+sudo cp -a ./php-fpm.ini "$phpfpm_ini"
 
 # Reload services
 sudo service php5-fpm reload || true
