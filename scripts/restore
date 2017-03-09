@@ -20,10 +20,6 @@ with_mysql=$(ynh_app_setting_get "$app" with_mysql)
 sudo yunohost app checkurl "${domain}${path}" -a "$app" \
     || ynh_die "Path not available: ${domain}${path}"
 
-# Restore sources & data
-final_path="/var/www/${app}"
-sudo cp -a ./sources "$final_path"
-
 # Check configuration files php-fpm
 nginx_conf="/etc/nginx/conf.d/${domain}.d/${app}.conf"
 [[ -f $nginx_conf ]] && ynh_die \
@@ -38,6 +34,13 @@ phpfpm_ini="/etc/php5/fpm/conf.d/20-${app}.ini"
 "The PHP FPM INI configuration already exists at '${phpfpm_ini}'.
  You should safely delete it before restoring this app."
 
+ # Restore sources & data
+final_path="/var/www/${app}"
+sudo cp -a ./sources "$final_path"
+
+# Set permissions
+sudo chown -R www-data: $final_path
+
 # Restore db
 if [[ $with_mysql -eq 1 ]]; then
 	db_pwd=$(ynh_app_setting_get $app mysqlpwd)
@@ -50,9 +53,6 @@ if [[ $with_mysql -eq 1 ]]; then
 	sudo sed -i "s@__DB_USER__@$db_user@g" $final_path/config/connect.php
 	sudo sed -i "s@__DB_PWD__@$db_pwd@g" $final_path/config/connect.php 
 fi
-
-# Set permissions
-sudo chown -R www-data: $final_path
 
 # Restore nginx configuration files
 sudo cp -a ./nginx.conf   "$nginx_conf"
