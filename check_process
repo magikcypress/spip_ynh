@@ -5,7 +5,6 @@
         path="/path"    (PATH)
         admin="john"    (USER)
         language="fr_FR"
-        multisite="No"
         is_public="Yes" (PUBLIC|public=Yes|private=No)
     ; Checks
         pkg_linter=1
@@ -16,7 +15,7 @@
         setup_public=1
         upgrade=1
         backup_restore=1
-        multi_instance=1
+        multi_instance=0
         wrong_user=1
         wrong_path=1
         incorrect_path=1
