@@ -1,14 +1,33 @@
 #!/bin/bash
 
-db_user=spip
-db_name=spip
-root_pwd=$(sudo cat /etc/yunohost/mysql)
-domain=$(sudo yunohost app setting spip domain)
+# Exit on command errors and treat unset variables as an error
+set -u
 
-mysql -u root -p$root_pwd -e "DROP DATABASE $db_name ; DROP USER $db_user@localhost ;"
-sudo rm -rf /var/www/spip
-sudo rm -f /etc/nginx/conf.d/$domain.d/spip.conf
-sudo rm -f /etc/php5/fpm/pool.d/spip.conf
+# Get multi-instances specific variables
+app=$YNH_APP_INSTANCE_NAME
 
-sudo service php5-fpm restart
-sudo service nginx reload
+# Source app helpers
+. /usr/share/yunohost/helpers
+
+# Retrieve app settings
+domain=$(ynh_app_setting_get "$app" domain)
+with_mysql=$(ynh_app_setting_get "$app" with_mysql)
+
+# Drop MySQL database and user as needed
+if [[ $with_mysql -eq 1 ]]; then
+    dbname=$app
+    dbuser=$app
+    dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
+    ynh_mysql_drop_db $dbname || true
+    ynh_mysql_drop_user $dbuser || true
+fi
+
+# Delete app directory and configurations
+sudo rm -rf "/var/www/${app}"
+sudo rm -f "/etc/php5/fpm/pool.d/${app}.conf"
+sudo rm -f "/etc/php5/fpm/conf.d/20-${app}.ini"
+[[ -n $domain ]] && sudo rm -f "/etc/nginx/conf.d/${domain}.d/${app}.conf"
+
+# Reload services
+sudo service php5-fpm restart || true
+sudo service nginx reload || true
