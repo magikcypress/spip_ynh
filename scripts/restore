@@ -30,7 +30,7 @@ fi
 nginx_conf="/etc/nginx/conf.d/${domain}.d/nginx.conf"
 if [ -f $nginx_conf ]; then
 	ynh_die "The NGINX configuration already exists at '${nginx_conf}'. You should safely delete it before restoring this app."
-
+fi
 # Check configuration files php-fpm
 phpfpm_conf="/etc/php5/fpm/pool.d/php-fpm.conf"
 if [ -f $phpfpm_conf ]; then 
