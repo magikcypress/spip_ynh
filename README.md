@@ -1,7 +1,7 @@
 # SPIP for YunoHost
 
-** Attention:** ne pas utiliser cette version, mais la version sur [YunoHost-Apps](https://github.com/YunoHost-Apps/spip_ynh)                                                                 
-** Forbidden:** Don't use this version, but a version into [YunoHost-Apps](https://github.com/YunoHost-Apps/spip_ynh)  
+**Attention:** ne pas utiliser cette version, mais la version sur [YunoHost-Apps](https://github.com/YunoHost-Apps/spip_ynh)                                                                 
+**Forbidden:** Don't use this version, but a version into [YunoHost-Apps](https://github.com/YunoHost-Apps/spip_ynh)  
 
 ## SPIP c'est quoi ?
 
