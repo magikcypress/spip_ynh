@@ -3,6 +3,7 @@
 * Attention:* ne pas utiliser cette version, mais la version sur [YunoHost-Apps](https://github.com/YunoHost-Apps/spip_ynh)
 * Forbidden:* Don't use this version, but a version into [YunoHost-Apps](https://github.com/YunoHost-Apps/spip_ynh)
 
+
 ## SPIP c'est quoi ?
 
 SPIP est un système de publication pour l’Internet qui s’attache particulièrement au fonctionnement collectif, au multilinguisme et à la facilité d’emploi. C’est un logiciel libre, distribué sous la licence GNU/GPL. Il peut ainsi être utilisé pour tout site Internet, qu’il soit associatif ou institutionnel, personnel ou marchand.
