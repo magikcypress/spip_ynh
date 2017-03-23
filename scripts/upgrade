@@ -28,6 +28,8 @@ root_pwd=$(sudo cat /etc/yunohost/mysql)
 
 final_path=/var/www/$app
 
+SETUP_SOURCE "spip-3.1.zip"
+
 db_name=$app
 
 CHECK_MD5_CONFIG "connect.php" "$final_path/config/connect.php"	# Created a backup of the config file if it was changed.
