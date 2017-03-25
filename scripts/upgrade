@@ -28,7 +28,7 @@ root_pwd=$(sudo cat /etc/yunohost/mysql)
 
 final_path=/var/www/$app
 
-SETUP_SOURCE "spip-3.1.zip"
+SETUP_SOURCE
 
 db_name=$app
 

@@ -47,7 +47,7 @@ GENERATE_DB $app	# Create a database and a dedicated user in the app name
 sudo mkdir "$final_path"
 ynh_app_setting_set $app final_path $final_path
 
-SETUP_SOURCE "spip-3.1.zip"
+SETUP_SOURCE
 
 # Set permissions spip directory
 sudo chown -R www-data: $final_path
