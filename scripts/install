@@ -127,8 +127,8 @@ fi
 sudo yunohost app ssowatconf
 
 # Reload Nginx and regenerate SSOwat conf
-sudo service php5-fpm restart
-sudo service nginx reload
+sudo systemctl reload php5-fpm
+sudo systemctl reload nginx
 
 # clean hosts
 sudo sed -i '/#SPIP/d' /etc/hosts

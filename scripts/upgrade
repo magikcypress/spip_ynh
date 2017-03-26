@@ -1,5 +1,4 @@
-sudo service php5-fpm restart
-sudo yunohost app ssowatconf#!/bin/bash
+#!/bin/bash
 
 # Exit on command errors and treat unset variables as an error
 set -eu
@@ -57,6 +56,6 @@ then
 fi
 
 # Reload Nginx
-sudo service nginx reload
-sudo service php5-fpm restart
+sudo systemctl reload php5-fpm
+sudo systemctl reload nginx
 sudo yunohost app ssowatconf
