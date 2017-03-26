@@ -17,7 +17,6 @@ domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
 admin_spip=$YNH_APP_ARG_ADMIN
 language=$YNH_APP_ARG_LANGUAGE
-#multisite=$YNH_APP_ARG_MULTISITE
 is_public=$YNH_APP_ARG_IS_PUBLIC
 ldap=$YNH_APP_ARG_LDAP
 
@@ -39,7 +38,6 @@ ynh_app_setting_set $app admin $admin_spip
 ynh_app_setting_set $app is_public $is_public
 ynh_app_setting_set $app language $language
 ynh_app_setting_set $app ldap $ldap
-#ynh_app_setting_set $app multisite $multisite
 
 GENERATE_DB $app	# Create a database and a dedicated user in the app name
 
@@ -108,7 +106,7 @@ done
 mysql --debug-check -u $db_user -p$db_pwd $db_user < ../conf/sql/spip.sql
 
 # Use LDAP for SPIP
-if [ "$ldap" = "Yes" ];
+if [ "${ldap}" = "Yes" ];
 then
 	sudo cp ../conf/ldap.php $final_path/config/ldap.php
 	sudo sed -i "s/__LDAP__/ldap/g" $final_path/config/connect.php    
