@@ -72,6 +72,11 @@ POOL_FPM
 sudo cp ../conf/connect.php $final_path/config/connect.php
 sudo cp ../conf/mes_options.php $final_path/config/mes_options.php 
 
+#Allow plugins installation directly from SPIP
+sudo mkdir $final_path/plugins/
+sudo mkdir $final_path/plugins/auto/
+sudo chown www-data:www-data -R $final_path/plugins/
+
 # Change SPIP configuration file variables
 sudo sed -i "s@__DB_USER__@$db_user@g" $final_path/config/connect.php
 sudo sed -i "s@__DB_PWD__@$db_pwd@g" $final_path/config/connect.php 
