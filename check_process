@@ -31,3 +31,7 @@
 	Level 8=0
 	Level 9=0
 	Level 10=0
+;;; Upgrade options
+	; commit=2016c3a3a972dc74d1ae1ec74ff80987eb753ce9
+		name=21 Nov 2017
+        manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr_FR&is_public=Yes
