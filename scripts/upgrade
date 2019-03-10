@@ -40,6 +40,12 @@ elif [ "$is_public" = "No" ]; then
 	is_public=0
 fi
 
+# If db_name doesn't exist, create it
+if [ -z $db_name ]; then
+  db_name=$app
+	ynh_app_setting_set $app db_name $db_name
+fi
+
 # If final_path doesn't exist, create it
 if [ -z $final_path ]; then
 	final_path=/var/www/$app
@@ -158,7 +164,7 @@ ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap5" "adresse_ldap=loc
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "ldap_present=true"
 
 email=$(yunohost user info $admin | grep mail: | cut -d' ' -f2 | tr -d '\n')
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=$email" "login=$admin" "pass=$password" "pass_verif=$password"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=\"$email\"" "login=$admin" "pass=$password" "pass_verif=$password"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=fin"
 
 # Remove the public access
@@ -200,6 +206,14 @@ fi
 ynh_print_info "Reloading nginx web server..."
 
 systemctl reload nginx
+
+#=================================================
+# SEND INFORMATION
+#=================================================
+
+echo "To finish the upgrade, you may have to update the database by clicking on the button (if asked) at this location: https://$domain$path_url/ecrire/" > mail_to_send
+
+ynh_send_readme_to_admin --app_message="mail_to_send" --type="upgrade"
 
 #=================================================
 # END OF SCRIPT

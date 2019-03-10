@@ -140,7 +140,7 @@ ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap5" "adresse_ldap=loc
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "ldap_present=true"
 
 email=$(yunohost user info $admin | grep mail: | cut -d' ' -f2 | tr -d '\n')
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=$email" "login=$admin" "pass=$password" "pass_verif=$password"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=\"$email\"" "login=$admin" "pass=$password" "pass_verif=$password"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=fin"
 
 # Remove the public access
