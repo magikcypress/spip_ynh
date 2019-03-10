@@ -71,6 +71,7 @@
 			},
 			{
 				"name": "users_status",
+				"type": "string",
 				"ask": {
 					"en": "Choose the status of YunoHost users",
 					"fr": "Choisissez le status des utilisateurs de YunoHost"
