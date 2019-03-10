@@ -1,55 +1,208 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -eu
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-source .fonctions	# Loads the generic functions usually used in the script
-source /usr/share/yunohost/helpers # Source YunoHost helpers
+source _common.sh
+source /usr/share/yunohost/helpers
 
-# See comments in install script
+#=================================================
+# LOAD SETTINGS
+#=================================================
+ynh_print_info "Loading installation settings..."
+
 app=$YNH_APP_INSTANCE_NAME
 
-# Retrieve app settings
-domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
-admin=$(ynh_app_setting_get "$app" admin)
-is_public=$(ynh_app_setting_get "$app" is_public)
-language=$(ynh_app_setting_get "$app" language)
+domain=$(ynh_app_setting_get $app domain)
+path_url=$(ynh_app_setting_get $app path)
+admin=$(ynh_app_setting_get $app admin)
+password=$(ynh_app_setting_get $app admin)
+is_public=$(ynh_app_setting_get $app is_public)
+final_path=$(ynh_app_setting_get $app final_path)
+users_status=$(ynh_app_setting_get $app users_status)
+db_name=$(ynh_app_setting_get $app db_name)
+db_pwd=$(ynh_app_setting_get $app mysqlpwd)
 
-CHECK_PATH	# Checks and corrects the syntax of the path.
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_print_info "Ensuring downward compatibility..."
 
-root_pwd=$(sudo cat /etc/yunohost/mysql)
-
-final_path=/var/www/$app
-
-# Get source
-SETUP_SOURCE
-
-db_name=$app
-
-CHECK_MD5_CONFIG "connect.php" "$final_path/config/connect.php"	# Created a backup of the config file if it was changed.
-
-# Modify Nginx configuration file and copy it to Nginx conf directory
-sudo sed -i "s@__PATHTOCHANGE__@$path@g" /etc/nginx/conf.d/$domain.d/$app.conf
-sudo sed -i "s@__FINALPATH__@$final_path@g" /etc/nginx/conf.d/$domain.d/$app.conf
-sudo sed -i "s@__NAMETOCHANGE__@$app@g" /etc/nginx/conf.d/$domain.d/$app.conf
-
-if [ "$is_public" = "Yes" ];
-then
-	sudo sed -i "s@#--PRIVATE--@@g" /etc/nginx/conf.d/$domain.d/$app.conf
+# Fix is_public as a boolean value
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set $app is_public 1
+	is_public=1
+elif [ "$is_public" = "No" ]; then
+	ynh_app_setting_set $app is_public 0
+	is_public=0
 fi
 
-# Create the php-fpm pool config
-POOL_FPM
-
-# Setup SSOwat
-ynh_app_setting_set "$app" is_public "$is_public"
-if [ "$is_public" = "Yes" ];
-then
-  ynh_app_setting_set "$app" unprotected_uris "/"
+# If final_path doesn't exist, create it
+if [ -z $final_path ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set $app final_path $final_path
 fi
 
-# Reload Nginx
-sudo systemctl reload php5-fpm
-sudo systemctl reload nginx
-sudo yunohost app ssowatconf
+# If users_status doesn't exist, create it
+if [ -z $users_status ]; then
+	users_status="Editor"
+	ynh_app_setting_set $app users_status $users_status
+fi
+
+if [ -z $password ]; then
+	# Generate random password
+	password=$(ynh_string_random 8)
+
+	echo "The new version of SPIP provide a new password. You can change it in the private area." > mail_to_send
+	echo "" >> mail_to_send
+	echo "This password is: $password" >> mail_to_send
+
+	ynh_send_readme_to_admin --app_message="mail_to_send" --type="upgrade"
+	
+	ynh_app_setting_set $app password $password
+fi
+
+#=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+ynh_print_info "Backing up the app before upgrading (may take a while)..."
+
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# CHECK THE PATH
+#=================================================
+
+# Normalize the URL path syntax
+path_url=$(ynh_normalize_url_path $path_url)
+
+#=================================================
+# STANDARD UPGRADE STEPS
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_print_info "Upgrading source files..."
+
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source "$final_path"
+
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+ynh_print_info "Upgrading nginx web server configuration..."
+
+# Create a dedicated nginx config
+ynh_add_nginx_config
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_print_info "Making sure dedicated system user exists..."
+
+# Create a dedicated user (if not existing)
+ynh_system_user_create $app
+
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+ynh_print_info "Upgrading php-fpm configuration..."
+
+# Create a dedicated php-fpm config
+ynh_add_fpm_config
+
+#=================================================
+# SPECIFIC UPGRADE
+#=================================================
+# SETUP APPLICATION WITH CURL
+#=================================================
+
+# Set right permissions for curl install
+chown -R $app: $final_path
+
+# Set the app as temporarily public for curl call
+ynh_app_setting_set $app skipped_uris "/"
+# Reload SSOwat config
+yunohost app ssowatconf
+
+ynh_backup_if_checksum_is_different "$final_path/config/connect.php"
+
+ynh_secure_remove "$final_path/config/connect.php"
+
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=chmod"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=2" "chmod=755" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "choix_db=$db_name" "tprefix=$db_name"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap1"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap2" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap3" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap4" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3" "base_ldap=dc=yunohost,dc=org"
+
+# statut_ldap can take: 0minirezo for Administrator, 1comite for Editor, 6forum for Visitor
+if [ $users_status = "Administrator" ]; then
+	status="0minirezo"
+elif [ $users_status = "Editor" ]; then
+	status="1comite"
+else
+	status="6forum"
+fi
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap5" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3" "base_ldap=dc=yunohost,dc=org" "statut_ldap=$status" "ldap_login=sAMAccountName,uid,login,userid,cn,sn" "ldap_nom=cn" "ldap_email=mail" "ldap_bio=description"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "ldap_present=true"
+
+email=$(yunohost user info $admin | grep mail: | cut -d' ' -f2 | tr -d '\n')
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=$email" "login=$admin" "pass=$password" "pass_verif=$password"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=fin"
+
+# Remove the public access
+if [ $is_public -eq 0 ]; then
+	ynh_app_setting_delete $app skipped_uris
+fi
+
+
+#=================================================
+# MODIFY A CONFIG FILE
+#=================================================
+
+ynh_replace_string "'','utf8');" "'ldap.php','utf8');" $final_path/config/connect.php
+cp ../conf/mes_options.php $final_path/config/mes_options.php
+
+#=================================================
+# STORE THE CONFIG FILE CHECKSUM
+#=================================================
+
+ynh_store_file_checksum "$final_path/config/connect.php"
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SETUP SSOWAT
+#=================================================
+ynh_print_info "Upgrading SSOwat configuration..."
+
+# Make app public if necessary
+if [ $is_public -eq 1 ]
+then
+	# unprotected_uris allows SSO credentials to be passed anyway
+	ynh_app_setting_set $app unprotected_uris "/"
+fi
+
+#=================================================
+# RELOAD NGINX
+#=================================================
+ynh_print_info "Reloading nginx web server..."
+
+systemctl reload nginx
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info "Upgrade of $app completed"
