@@ -147,24 +147,25 @@ ynh_secure_remove "$final_path/config/connect.php"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=chmod"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=2" "chmod=755" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "choix_db=$db_name" "tprefix=$db_name"
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap1"
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap2" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3"
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap3" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3"
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap4" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3" "base_ldap=dc=yunohost,dc=org"
-
-# statut_ldap can take: 0minirezo for Administrator, 1comite for Editor, 6forum for Visitor
-if [ $users_status = "Administrator" ]; then
-	status="0minirezo"
-elif [ $users_status = "Editor" ]; then
-	status="1comite"
-else
-	status="6forum"
-fi
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap5" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3" "base_ldap=dc=yunohost,dc=org" "statut_ldap=$status" "ldap_login=sAMAccountName,uid,login,userid,cn,sn" "ldap_nom=cn" "ldap_email=mail" "ldap_bio=description"
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "ldap_present=true"
+# For now spip have a problem with LDAP
+#ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap1"
+#ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap2" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3"
+#ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap3" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3"
+#ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap4" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3" "base_ldap=dc=yunohost,dc=org"
+#
+## statut_ldap can take: 0minirezo for Administrator, 1comite for Editor, 6forum for Visitor
+#if [ $users_status = "Administrator" ]; then
+#	status="0minirezo"
+#elif [ $users_status = "Editor" ]; then
+#	status="1comite"
+#else
+#	status="6forum"
+#fi
+#ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap5" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3" "base_ldap=dc=yunohost,dc=org" "statut_ldap=$status" "ldap_login=sAMAccountName,uid,login,userid,cn,sn" "ldap_nom=cn" "ldap_email=mail" "ldap_bio=description"
+#ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "ldap_present=true"
 
 email=$(yunohost user info $admin | grep mail: | cut -d' ' -f2 | tr -d '\n')
-ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=\"$email\"" "login=$admin" "pass=$password" "pass_verif=$password"
+ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=$email" "login=$admin" "pass=$password" "pass_verif=$password"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=fin"
 
 # Remove the public access
@@ -177,7 +178,7 @@ fi
 # MODIFY A CONFIG FILE
 #=================================================
 
-ynh_replace_string "'','utf8');" "'ldap.php','utf8');" $final_path/config/connect.php
+#ynh_replace_string "'','utf8');" "'ldap.php','utf8');" $final_path/config/connect.php
 cp ../conf/mes_options.php $final_path/config/mes_options.php
 
 #=================================================
