@@ -42,7 +42,7 @@ fi
 
 # If db_name doesn't exist, create it
 if [ -z $db_name ]; then
-  db_name=$app
+	db_name=$app
 	ynh_app_setting_set $app db_name $db_name
 fi
 
@@ -84,6 +84,19 @@ ynh_clean_setup () {
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
+
+#=================================================
+# HANDLE MIGRATION FROM SPIP2
+#=================================================
+
+ynh_handle_app_migration "spip2" "spip2_migration"
+if [ $migration_process -eq 1 ]
+then
+    # If a migration has been perform
+    # Reload some values changed by the migration process
+    final_path=$(ynh_app_setting_get $app final_path)
+    db_name=$(ynh_app_setting_get $app db_name)
+fi
 
 #=================================================
 # CHECK THE PATH
@@ -215,6 +228,23 @@ systemctl reload nginx
 echo "To finish the upgrade, you may have to update the database by clicking on the button (if asked) at this location: https://$domain$path_url/ecrire/" > mail_to_send
 
 ynh_send_readme_to_admin --app_message="mail_to_send" --type="upgrade"
+
+if [ $migration_process -eq 1 ]
+then
+    ynh_print_info "Spip2 has been successfully migrated to Spip! \
+A last scheduled operation will run in a couple of minutes to finish the \
+migration in YunoHost side. Do not proceed any application operation while \
+you don't see Spip as installed."
+
+    # Execute a post migration script after the end of this upgrade.
+    # Mainly for some cleaning
+    script_post_migration=spip2_post_migration.sh
+    cp ../conf/$script_post_migration /tmp
+    ynh_replace_string "__OLD_APP__" "$old_app" /tmp/$script_post_migration
+    ynh_replace_string "__NEW_APP__" "$app" /tmp/$script_post_migration
+    chmod +x /tmp/$script_post_migration
+    (cd /tmp; echo "/tmp/$script_post_migration > /tmp/$script_post_migration.log 2>&1" | at now + 2 minutes)
+fi
 
 #=================================================
 # END OF SCRIPT
