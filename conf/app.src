@@ -1,5 +1,5 @@
-SOURCE_URL=https://files.spip.net/spip/archives/SPIP-v3.2.3.zip
-SOURCE_SUM=8d83e515c7616be5e76ce29e16cbfb011438309d7c4a02ba2f2749c8d5ae8a2a
+SOURCE_URL=https://files.spip.net/spip/archives/SPIP-v3.2.4.zip
+SOURCE_SUM=b2fe568c6bd05d095455605b41e0fc4cb18a11ef5acc194dd034da2332d3fbce
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=zip
 SOURCE_IN_SUBDIR=true
