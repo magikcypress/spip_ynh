@@ -6,20 +6,20 @@
 		"en": "SPIP - publishing system for the Internet",
 		"fr": "SPIP - Système de publication pour l’Internet"
 	},
-	"version": "1.1.4",
+	"version": "3.2.4~ynh1",
 	"url": "http://www.spip.net/",
-	"license": "free",
+	"license": "GPL-3.0-or-later",
 	"maintainer": {
 		"name": "cyp",
 		"email": "cyp@rouquin.me"
 	},
 	"requirements": {
-		"yunohost": ">> 2.4.0"
+		"yunohost": ">= 3.2.2"
 	},
 	"multi_instance": true,
 	"services": [
 		"nginx",
-		"php5-fpm",
+		"php7.0-fpm",
 		"mysql"
 	],
 	"arguments": {
@@ -53,31 +53,31 @@
 				"example": "johndoe"
 			},
 			{
+				"name": "password",
+				"type": "password",
+				"ask": {
+					"en": "Choose the SPIP password for the administrator",
+					"fr": "Choisissez un mot de passe pour l'administrateur"
+				}
+			},
+			{
 				"name": "is_public",
+				"type": "boolean",
 				"ask": {
 					"en": "Is it a public SPIP site ?",
 					"fr": "Est-ce un site public ?"
 				},
-				"choices": ["Yes", "No"],
-				"default": "Yes"
+				"default": true
 			},
 			{
-				"name": "language",
+				"name": "users_status",
+				"type": "string",
 				"ask": {
-					"en": "Choose the application language",
-					"fr": "Choisissez la langue de l'application"
+					"en": "Choose the status of YunoHost users",
+					"fr": "Choisissez le status des utilisateurs de YunoHost"
 				},
-				"choices": ["en_EN", "fr_FR"],
-				"default": "fr_FR"
-			},
-			{
-				"name": "ldap",
-				"ask": {
-					"en": "LDAP Connection",
-					"fr": "Connexion LDAP"
-				},
-				"choices": ["Yes", "No"],
-				"default": "No"
+				"choices": ["Administrator", "Editor", "Visitor"],
+				"default": "Editor"
 			}
 		]
 	}

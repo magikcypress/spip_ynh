@@ -1,79 +1,91 @@
 # SPIP for YunoHost
 
-## SPIP c'est quoi ?
+[![Integration level](https://dash.yunohost.org/integration/spip.svg)](https://dash.yunohost.org/appci/app/spip)  
+[![Install spip with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=spip)
 
-SPIP est un système de publication pour l’Internet qui s’attache particulièrement au fonctionnement collectif, au multilinguisme et à la facilité d’emploi. C’est un logiciel libre, distribué sous la licence GNU/GPL. Il peut ainsi être utilisé pour tout site Internet, qu’il soit associatif ou institutionnel, personnel ou marchand.
+*[Lire ce readme en français.](./README_fr.md)*
 
-Source: [spip.net](http://www.spip.net/fr_rubrique91.html)
+> *This package allow you to install spip quickly and simply on a YunoHost server.  
+If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
-## Fonctionnalité de l'application pour Yunohost
-
-- Installation de la base sans passer par le système d'installation
-- Support multilingue
-- Support LDAP
-
-### Installation
-
-`$ sudo yunohost app install https://github.com/YunoHost-Apps/spip_ynh.git`
-
-### Mise à jour
-
-`$ sudo yunohost app upgrade --verbose spip -u https://github.com/YunoHost-Apps/spip_ynh.git`
-
-### Utilisation
-
-Accéder à l'administration du site en écrivant l'adresse suivante dans votre navigateur.
-
-https://www.domain.tld/spip/ecrire
-
-Faire une demande de "mot de passe oublié" pour changer votre mot de passe, vous recevez un email vous indiquant comment procéder au changement de mot de passe.
-
-## What is SPIP?
+## Overview
 
 SPIP is a publishing system for the Internet in which great importance is attached to collaborative working, to multilingual environments, and to simplicity of use for web authors. It is free software, distributed under the GNU/GPL licence. This means that it can be used for any Internet site, whether personal or institutional, non-profit or commercial.
 
 Source: [spip.net](http://www.spip.net/en_rubrique25.html)
 
-### Use
+**Shipped version:** 3.2.3
 
-Access the site administration by writing the following address in your browser.
+## Screenshots
 
-https://www.domain.tld/spip/ecrire
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Logo_SPIP.png/220px-Logo_SPIP.png)
 
-Request a "forgotten password" to change your password, you will receive an email telling you how to change your password.
+## Demo
 
-## Features for Yunohost app
+* [Official demo](https://demo.spip.net/)
 
-- Database install without going through the system install
-- Multilanguage support
-- LDAP support
+## Configuration
 
-## Versionning
+How to configure this app: by an admin panel.
 
-### Version 1.1.4 (05/03/17)
+## Documentation
 
-- Support LDAP
+ * Official documentation: https://www.spip.net
 
-### Version 1.1.3 (22/02/17)
+## YunoHost specific features
 
-- Update scripts for passing package_linter
-- Install database
-- Multilanguage
+#### Multi-users support
 
-### Version 1.0.3 (20/10/16)
+Are LDAP and HTTP auth supported? **Yes**
+Can the app be used by multiple users? **Yes**
 
-- Update script - status test
+#### Supported architectures
 
-### Version 1.0.2 (29/08/16)
+* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/spip/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/spip/)
+* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/spip%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/spip/)
 
-- Fix Packaging [Source](https://forum.yunohost.org/t/news-about-app-management-and-packaging-in-yunohost-2-4/1379/1)
-- Update SPIP Version
+## Migrate from SPIP2
 
-### Version 1.0.1 (04/01/16)
+**This is not considered as stable yet, please do it with care and only for testing!**
 
-- Delete SPIP sources
-- Fix install script for download and extract SPIP
+This package handle the migration from SPIP2 to SPIP. For that, your
+SPIP2 application must be **up-to-date** in YunoHost. To ensure that, execute:
 
-###Version 1.0.0 (28/12/15)
+```bash
+sudo yunohost app upgrade -u https://github.com/YunoHost-Apps/spip2_ynh spip2 --debug
+```
 
-- Create script install
+You will then have to upgrade your SPIP2 application with this repository.
+This can only be done from the command-line interface - e.g. through SSH. Once you're connected, you simply have to execute the following:
+
+```bash
+sudo yunohost app upgrade -u https://github.com/YunoHost-Apps/spip_ynh spip2 --debug
+```
+
+The `--debug` option will let you see the full output. If you encounter any issue, please paste it.
+
+Note that a cron job will be executed at some time after the end of this
+command. You must wait that before doing any other application operations!
+You should see that SPIP is installed after that.
+
+## Links
+
+ * Report a bug: https://github.com/YunoHost-Apps/spip_ynh/issues
+ * App website: https://www.spip.net
+ * YunoHost website: https://yunohost.org/
+
+---
+
+Developers info
+----------------
+
+**Only if you want to use a testing branch for coding, instead of merging directly into master.**
+Please do your pull request to the [testing branch](https://github.com/YunoHost-Apps/spip_ynh/tree/testing).
+
+To try the testing branch, please proceed like that.
+```
+sudo yunohost app install https://github.com/YunoHost-Apps/spip_ynh/tree/testing --debug
+or
+sudo yunohost app upgrade spip -u https://github.com/YunoHost-Apps/spip_ynh/tree/testing --debug
+```
