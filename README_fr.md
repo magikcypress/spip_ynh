@@ -14,7 +14,7 @@ SPIP est un système de publication pour l’Internet qui s’attache particuli�
 
 Source: [spip.net](http://www.spip.net/fr_rubrique91.html)
 
-**Version incluse:** 3.2.4
+**Version incluse:** 3.2.5
 
 ## Captures d'écran
 
