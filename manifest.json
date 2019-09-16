@@ -6,7 +6,7 @@
 		"en": "SPIP - publishing system for the Internet",
 		"fr": "SPIP - Système de publication pour l’Internet"
 	},
-	"version": "3.2.4~ynh1",
+	"version": "3.2.5~ynh1",
 	"url": "http://www.spip.net/",
 	"license": "GPL-3.0-or-later",
 	"maintainer": {
