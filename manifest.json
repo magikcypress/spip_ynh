@@ -4,7 +4,7 @@
 	"packaging_format": 1,
 	"description": {
 		"en": "A CMS with a focus on collaborative edition and multilingualism",
-		"fr": "Un CMS avec conçu pour l'édition collaborative et le multilinguisme"
+		"fr": "Un CMS conçu pour l'édition collaborative et le multilinguisme"
 	},
 	"version": "3.2.5~ynh1",
 	"url": "http://www.spip.net/",
