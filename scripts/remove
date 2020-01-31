@@ -32,6 +32,13 @@ ynh_print_info "Stopping and removing the systemd service"
 ynh_remove_systemd_config
 
 #=================================================
+# REMOVE DEPENDENCIES
+#=================================================
+ynh_print_info --message="Removing dependencies"
+
+ynh_remove_app_dependencies
+
+#=================================================
 # REMOVE THE MYSQL DATABASE
 #=================================================
 ynh_print_info "Removing the MySQL database"

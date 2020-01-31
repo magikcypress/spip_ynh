@@ -1,5 +1,15 @@
 #!/bin/bash
 
+#=================================================
+# SET ALL CONSTANTS
+#=================================================
+
+pkg_dependencies="php-sqlite3"
+
+#=================================================
+# EXPERIMENTAL HELPERS
+#=================================================
+
 # Send an email to inform the administrator
 #
 # usage: ynh_send_readme_to_admin --app_message=app_message [--recipients=recipients] [--type=type]
