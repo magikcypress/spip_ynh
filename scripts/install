@@ -70,6 +70,13 @@ ynh_mysql_setup_db $db_name $db_name
 db_pwd=$(ynh_app_setting_get $app mysqlpwd)
 
 #=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_print_info --message="Installing dependencies..."
+
+ynh_install_app_dependencies $pkg_dependencies
+
+#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_print_info "Setting up source files..."
