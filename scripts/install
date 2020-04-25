@@ -147,6 +147,9 @@ ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "adresse_db=localhost
 #ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=ldap5" "adresse_ldap=localhost" "port_ldap=389" "tls_ldap=no" "protocole_ldap=3" "base_ldap=dc=yunohost,dc=org" "statut_ldap=$status" "ldap_login=sAMAccountName,uid,login,userid,cn,sn" "ldap_nom=cn" "ldap_email=mail" "ldap_bio=description"
 #ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "ldap_present=true"
 
+# Fix db initialization
+ynh_local_curl "/ecrire/?exec=install" "etape=3b"
+
 email=$(yunohost user info $admin | grep mail: | cut -d' ' -f2 | tr -d '\n')
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3b" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "sel_db=$db_name" "nom=$admin" "email=$email" "login=$admin" "pass=$password" "pass_verif=$password"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=fin"
