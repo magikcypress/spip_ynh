@@ -4,7 +4,7 @@
 # SET ALL CONSTANTS
 #=================================================
 
-pkg_dependencies="php-sqlite3"
+pkg_dependencies="php7.0-sqlite3"
 
 #=================================================
 # EXPERIMENTAL HELPERS
