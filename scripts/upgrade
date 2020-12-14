@@ -103,13 +103,6 @@ if [ $migration_process -eq 1 ]; then
 fi
 
 #=================================================
-# CHECK THE PATH
-#=================================================
-
-# Normalize the URL path syntax
-path_url=$(ynh_normalize_url_path $path_url)
-
-#=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # INSTALL DEPENDENCIES
@@ -199,7 +192,6 @@ ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=fin"
 if [ $is_public -eq 0 ]; then
 	ynh_app_setting_delete $app skipped_uris
 fi
-
 
 #=================================================
 # MODIFY A CONFIG FILE
