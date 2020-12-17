@@ -116,14 +116,13 @@ ynh_add_fpm_config
 chown -R $app: $final_path
 
 # Set the app as temporarily public for curl call
-ynh_print_info "Configuring SSOwat..."
 ynh_app_setting_set $app skipped_uris "/"
 # Reload SSOwat config
 yunohost app ssowatconf
 
 # Reload Nginx
 systemctl reload nginx
-ynh_print_info "Finalizing installation..."
+ynh_script_progression --message="Finalizing installation..."
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=chmod"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=2" "chmod=755" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql"
 ynh_local_curl "/ecrire/?suivant" "exec=install" "etape=3" "adresse_db=localhost" "login_db=$db_name" "pass_db=$db_pwd" "server_db=mysql" "choix_db=$db_name" "tprefix=$db_name"
