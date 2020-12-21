@@ -1,11 +1,11 @@
 # SPIP for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/spip.svg)](https://dash.yunohost.org/appci/app/spip)  
-[![Install spip with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=spip)
+[![Integration level](https://dash.yunohost.org/integration/spip.svg)](https://dash.yunohost.org/appci/app/spip) ![](https://ci-apps.yunohost.org/ci/badges/spip.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/spip.maintain.svg)  
+[![Install SPIP with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=spip)
 
 *[Lire ce readme en français.](./README_fr.md)*
 
-> *This package allow you to install spip quickly and simply on a YunoHost server.  
+> *This package allow you to install SPIP quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
 ## Overview
@@ -14,7 +14,7 @@ SPIP is a publishing system for the Internet in which great importance is attach
 
 Source: [spip.net](http://www.spip.net/en_rubrique25.html)
 
-**Shipped version:** 3.2.7
+**Shipped version:** 3.2.8
 
 ## Screenshots
 
@@ -36,14 +36,13 @@ How to configure this app: by an admin panel.
 
 #### Multi-users support
 
-Are LDAP and HTTP auth supported? **Yes**
-Can the app be used by multiple users? **Yes**
+ * Are LDAP and HTTP auth supported? **Yes**
+ * Can the app be used by multiple users? **Yes**
 
 #### Supported architectures
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/spip/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/spip/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/spip/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/spip%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/spip/)
 
 ## Migrate from SPIP2
 
@@ -77,10 +76,8 @@ You should see that SPIP is installed after that.
 
 ---
 
-Developers info
-----------------
+## Developers info
 
-**Only if you want to use a testing branch for coding, instead of merging directly into master.**
 Please do your pull request to the [testing branch](https://github.com/YunoHost-Apps/spip_ynh/tree/testing).
 
 To try the testing branch, please proceed like that.

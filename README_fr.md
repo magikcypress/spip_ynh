@@ -1,11 +1,11 @@
 # SPIP pour YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/spip.svg)](https://dash.yunohost.org/appci/app/spip)  
-[![Install spip with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=spip)
+[![Integration level](https://dash.yunohost.org/integration/spip.svg)](https://dash.yunohost.org/appci/app/spip) ![](https://ci-apps.yunohost.org/ci/badges/spip.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/spip.maintain.svg)  
+[![Install SPIP with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=spip)
 
 *[Read this readme in english.](./README.md)* 
 
-> *Ce package vous permet d'installer spip rapidement et simplement sur un serveur Yunohost.  
+> *Ce package vous permet d'installer SPIP rapidement et simplement sur un serveur Yunohost.  
 Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
 
 ## Vue d'ensemble
@@ -14,7 +14,7 @@ SPIP est un système de publication pour l’Internet qui s’attache particuli�
 
 Source: [spip.net](http://www.spip.net/fr_rubrique91.html)
 
-**Version incluse:** 3.2.7
+**Version incluse:** 3.2.8
 
 ## Captures d'écran
 
@@ -36,14 +36,13 @@ Comment configurer cette application: via le panneau d'administration.
 
 #### Support multi-utilisateurs
 
-L'authentification LDAP et HTTP est-elle prise en charge? **Oui**
-L'application peut-elle être utilisée par plusieurs utilisateurs? **Oui**
+ * L'authentification LDAP et HTTP est-elle prise en charge? **Oui**
+ * L'application peut-elle être utilisée par plusieurs utilisateurs? **Oui**
 
 #### Supported architectures
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/spip/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/spip/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/spip%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/spip/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/spip%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/spip/)
 
 ## Migration depuis SPIP2
 
@@ -69,15 +68,13 @@ Notez qu'une tâche cron sera exécutée après la fin de cette commande. Vous d
 ## Links
 
  * Signaler un bug: https://github.com/YunoHost-Apps/spip_ynh/issues
- * Site de l'application: Lien vers le site officiel de cette application
+ * Site de l'application: https://www.spip.net
  * Site web YunoHost: https://yunohost.org/
 
 ---
 
-Informations pour les développeurs
-----------------
+## Informations pour les développeurs
 
-**Seulement si vous voulez utiliser une branche de test pour le codage, au lieu de fusionner directement dans la banche principale.**
 Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/spip_ynh/tree/testing).
 
 Pour essayer la branche testing, procédez comme suit.

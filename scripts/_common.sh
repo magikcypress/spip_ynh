@@ -4,7 +4,9 @@
 # SET ALL CONSTANTS
 #=================================================
 
-pkg_dependencies="php7.0-sqlite3"
+YNH_PHP_VERSION="7.2"
+
+extra_php_dependencies="php${YNH_PHP_VERSION}-sqlite3 php${YNH_PHP_VERSION}-mysql php${YNH_PHP_VERSION}-xml"
 
 #=================================================
 # EXPERIMENTAL HELPERS
@@ -242,7 +244,7 @@ ynh_handle_app_migration ()  {
 
     # TODO Handle multi instance apps...
     # Check that there is not already an app installed for this id.
-    (yunohost app list --installed -f "$new_app" | grep -q -w "$new_app") \
+    yunohost app list | grep -q 'id: $appname' \
     && ynh_die "$new_app is already installed"
 
     #=================================================
